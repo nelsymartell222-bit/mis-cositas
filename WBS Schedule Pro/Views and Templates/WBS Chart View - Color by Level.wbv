@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<wbs_view pagelayout="WBS Chart Page Layout" defaultarrange="wbs" borderpolicy="outlinelevel" borderfillpolicy="outlinelevel" bordershadowpolicy="criticalpath">
+	<connector crstyle="curve">
+		<line id="in" width="1.5pt" color="dimgray"/>
+		<line id="out" width="1.5pt" color="dimgray"/>
+		<line id="common" width="1.5pt" color="dimgray"/>
+	</connector>
+	<item id="summary" drop="21.6pt" before="21.6pt"/>
+	<item id="task" before="3.6pt" listmode="stemleft"/>
+	<border id="Critical Task" style="null" shcolor="darkgray" bkcolor="lightyellow"/>
+	<border id="Critical Milestone" style="null" shcolor="darkgray" bkcolor="lightyellow"/>
+	<border id="Critical Summary" shape="curved_rect" shdir="bottom_right" shdepth="2.25pt" shcolor="darkgray" bkcolor="lightyellow"/>
+	<border id="Noncritical Task" style="null" shcolor="darkgray" bkcolor="lightyellow"/>
+	<border id="Noncritical Milestone" style="null" shcolor="darkgray" bkcolor="lightyellow"/>
+	<border id="Noncritical Summary" shape="curved_rect" shdir="bottom_right" shdepth="2.25pt" shcolor="darkgray" bkcolor="lightyellow"/>
+	<border id="External Task" style="null" shcolor="darkgray" bkcolor="lightyellow"/>
+	<border id="Level 0 (Project Summary)" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" color="olive" bkcolor="khaki" bkstyle="gradient_top_bottom">
+		<border_edge id="top" width="1.5pt" color="olive"/>
+		<border_edge id="left" width="1.5pt" color="olive"/>
+		<border_edge id="bottom" width="1.5pt" color="olive"/>
+		<border_edge id="right" width="1.5pt" color="olive"/>
+	</border>
+	<border id="Level 1 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" color="#46AAC5" bkcolor="#B5EEFF" bkstyle="gradient_top_bottom">
+		<border_edge id="top" width="1.5pt" color="#46AAC5"/>
+		<border_edge id="left" width="1.5pt" color="#46AAC5"/>
+		<border_edge id="bottom" width="1.5pt" color="#46AAC5"/>
+		<border_edge id="right" width="1.5pt" color="#46AAC5"/>
+	</border>
+	<border id="Level 1 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 2 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" color="#7D60A0" bkcolor="#E4DAF8" bkstyle="gradient_top_bottom">
+		<border_edge id="top" width="1.5pt" color="#7D60A0"/>
+		<border_edge id="left" width="1.5pt" color="#7D60A0"/>
+		<border_edge id="bottom" width="1.5pt" color="#7D60A0"/>
+		<border_edge id="right" width="1.5pt" color="#7D60A0"/>
+	</border>
+	<border id="Level 2 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 3 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" color="#357E49" bkcolor="#DAFDA8" bkstyle="gradient_top_bottom">
+		<border_edge id="top" width="1.5pt" color="#357E49"/>
+		<border_edge id="left" width="1.5pt" color="#357E49"/>
+		<border_edge id="bottom" width="1.5pt" color="#357E49"/>
+		<border_edge id="right" width="1.5pt" color="#357E49"/>
+	</border>
+	<border id="Level 3 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 4 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" color="#BE4B48" bkcolor="#FFCCCB" bkstyle="gradient_top_bottom">
+		<border_edge id="top" width="1.5pt" color="#BE4B48"/>
+		<border_edge id="left" width="1.5pt" color="#BE4B48"/>
+		<border_edge id="bottom" width="1.5pt" color="#BE4B48"/>
+		<border_edge id="right" width="1.5pt" color="#BE4B48"/>
+	</border>
+	<border id="Level 4 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 5 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" color="#AE841A" bkcolor="#FEFF9C">
+		<border_edge id="top" width="1.5pt" color="#AE841A"/>
+		<border_edge id="left" width="1.5pt" color="#AE841A"/>
+		<border_edge id="bottom" width="1.5pt" color="#AE841A"/>
+		<border_edge id="right" width="1.5pt" color="#AE841A"/>
+	</border>
+	<border id="Level 5 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 6 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" color="#4A7EBB" bkcolor="#A4C5FF" bkstyle="gradient_top_bottom">
+		<border_edge id="top" width="1.5pt" color="#4A7EBB"/>
+		<border_edge id="left" width="1.5pt" color="#4A7EBB"/>
+		<border_edge id="bottom" width="1.5pt" color="#4A7EBB"/>
+		<border_edge id="right" width="1.5pt" color="#4A7EBB"/>
+	</border>
+	<border id="Level 6 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 7 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" color="#7D60A0" bkcolor="plum" bkstyle="gradient_top_bottom">
+		<border_edge id="top" width="1.5pt" color="#7D60A0"/>
+		<border_edge id="left" width="1.5pt" color="#7D60A0"/>
+		<border_edge id="bottom" width="1.5pt" color="#7D60A0"/>
+		<border_edge id="right" width="1.5pt" color="#7D60A0"/>
+	</border>
+	<border id="Level 7 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 8 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" color="#BE4B48" bkcolor="mistyrose" bkstyle="gradient_top_bottom">
+		<border_edge id="top" width="1.5pt" color="#BE4B48"/>
+		<border_edge id="left" width="1.5pt" color="#BE4B48"/>
+		<border_edge id="bottom" width="1.5pt" color="#BE4B48"/>
+		<border_edge id="right" width="1.5pt" color="#BE4B48"/>
+	</border>
+	<border id="Level 8 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 9 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" color="darkgreen" bkcolor="lime" bkstyle="gradient_top_bottom">
+		<border_edge id="top" width="1.5pt" color="darkgreen"/>
+		<border_edge id="left" width="1.5pt" color="darkgreen"/>
+		<border_edge id="bottom" width="1.5pt" color="darkgreen"/>
+		<border_edge id="right" width="1.5pt" color="darkgreen"/>
+	</border>
+	<border id="Level 9 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 10 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" color="#46AAC5" bkcolor="#9FEAFF" bkstyle="gradient_top_bottom">
+		<border_edge id="top" width="1.5pt" color="#46AAC5"/>
+		<border_edge id="left" width="1.5pt" color="#46AAC5"/>
+		<border_edge id="bottom" width="1.5pt" color="#46AAC5"/>
+		<border_edge id="right" width="1.5pt" color="#46AAC5"/>
+	</border>
+	<border id="Level 10 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 11 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" bkcolor="lightyellow">
+		<border_edge id="top" width="1.5pt"/>
+		<border_edge id="left" width="1.5pt"/>
+		<border_edge id="bottom" width="1.5pt"/>
+		<border_edge id="right" width="1.5pt"/>
+	</border>
+	<border id="Level 11 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 12 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" bkcolor="lightyellow">
+		<border_edge id="top" width="1.5pt"/>
+		<border_edge id="left" width="1.5pt"/>
+		<border_edge id="bottom" width="1.5pt"/>
+		<border_edge id="right" width="1.5pt"/>
+	</border>
+	<border id="Level 12 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 13 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" bkcolor="lightyellow">
+		<border_edge id="top" width="1.5pt"/>
+		<border_edge id="left" width="1.5pt"/>
+		<border_edge id="bottom" width="1.5pt"/>
+		<border_edge id="right" width="1.5pt"/>
+	</border>
+	<border id="Level 13 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 14 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" bkcolor="lightyellow">
+		<border_edge id="top" width="1.5pt"/>
+		<border_edge id="left" width="1.5pt"/>
+		<border_edge id="bottom" width="1.5pt"/>
+		<border_edge id="right" width="1.5pt"/>
+	</border>
+	<border id="Level 14 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 15 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" bkcolor="lightyellow">
+		<border_edge id="top" width="1.5pt"/>
+		<border_edge id="left" width="1.5pt"/>
+		<border_edge id="bottom" width="1.5pt"/>
+		<border_edge id="right" width="1.5pt"/>
+	</border>
+	<border id="Level 15 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 16 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" bkcolor="lightyellow">
+		<border_edge id="top" width="1.5pt"/>
+		<border_edge id="left" width="1.5pt"/>
+		<border_edge id="bottom" width="1.5pt"/>
+		<border_edge id="right" width="1.5pt"/>
+	</border>
+	<border id="Level 16 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 17 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" bkcolor="lightyellow">
+		<border_edge id="top" width="1.5pt"/>
+		<border_edge id="left" width="1.5pt"/>
+		<border_edge id="bottom" width="1.5pt"/>
+		<border_edge id="right" width="1.5pt"/>
+	</border>
+	<border id="Level 17 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 18 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" bkcolor="lightyellow">
+		<border_edge id="top" width="1.5pt"/>
+		<border_edge id="left" width="1.5pt"/>
+		<border_edge id="bottom" width="1.5pt"/>
+		<border_edge id="right" width="1.5pt"/>
+	</border>
+	<border id="Level 18 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 19 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" bkcolor="lightyellow">
+		<border_edge id="top" width="1.5pt"/>
+		<border_edge id="left" width="1.5pt"/>
+		<border_edge id="bottom" width="1.5pt"/>
+		<border_edge id="right" width="1.5pt"/>
+	</border>
+	<border id="Level 19 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<border id="Level 20 Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="4.5pt" bkcolor="lightyellow">
+		<border_edge id="top" width="1.5pt"/>
+		<border_edge id="left" width="1.5pt"/>
+		<border_edge id="bottom" width="1.5pt"/>
+		<border_edge id="right" width="1.5pt"/>
+	</border>
+	<border id="Level 20 Task" style="null" shdir="bottom_right" shdepth="4.5pt" bkcolor="none"/>
+	<grid id="summary" rows="1" cols="1">
+		<row>
+			<cell field="Name" format="1" type="wraptext" font-size="11pt" bold="yes" left_p="7.2pt" right_p="7.2pt" top_p="7.2pt" bottom_p="7.2pt" charlen="25"/>
+		</row>
+	</grid>
+	<grid id="task" rows="1" cols="1">
+		<row>
+			<cell field="Name" type="wraptext" halign="left" font-size="11pt" bold="yes" color="default" left_p="1.45pt" right_p="1.45pt" top_p="1.45pt" bottom_p="1.45pt" charlen="25"/>
+		</row>
+	</grid>
+	<groupspec>
+	</groupspec>
+</wbs_view>

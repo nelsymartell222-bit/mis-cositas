@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<DefaultStyle>
+	<size width="199" height="114"/>
+	<border id="AnnotationBorderStyle" shape="curved_rect" width="1.5pt" style="solid" shdir="bottom_right" shdepth="3pt" shcolor="silver" color="#AE841A" bkcolor="#FEFF9C" removefromlegend="no" bkstyle="flat">
+		<border_edge id="top" shape="none" width="1.5pt" style="solid" depth="0pt" color="#AE841A" bkcolor="white"/>
+		<border_edge id="left" shape="none" width="1.5pt" style="solid" depth="0pt" color="#AE841A" bkcolor="white"/>
+		<border_edge id="bottom" shape="none" width="1.5pt" style="solid" depth="0pt" color="#AE841A" bkcolor="white"/>
+		<border_edge id="right" shape="none" width="1.5pt" style="solid" depth="0pt" color="#AE841A" bkcolor="white"/>
+	</border>
+	<cell id="AnnotationCellStyle" field=" (Blank)" format="0" type="wraptext" halign="center" valign="center" font-name="Arial" font-size="11pt" bold="yes" italic="no" strikeout="no" underline="no" orient="normal" color="black" bkcolor="none" label="" lafter="no" left_p="7.2pt" right_p="7.2pt" top_p="7.2pt" bottom_p="7.2pt" left_w="0pt" right_w="0pt" top_w="0pt" bottom_w="0pt" left_s="null" right_s="null" top_s="null" bottom_s="null" left_c="black" right_c="black" top_c="black" bottom_c="black" barfield="Work" barcolor="black" baredge="left" rowspan="0" colspan="0" stretch="no" charlen="0" bkstyle="flat"/>
+	<line id="AnnotationLinkStyle" style="solid" width="1.5pt" color="black">
+		<arrow id="from" style="off_fat" size="12pt" color="black" bkcolor="black"/>
+		<arrow id="to" style="none" size="7.2pt" color="black" bkcolor="black"/>
+	</line>
+</DefaultStyle>

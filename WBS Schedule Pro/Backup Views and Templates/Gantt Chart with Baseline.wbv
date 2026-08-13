@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<ts_view pagelayout="Gantt Chart Page Layout" ganttchart="yes" fonttextpolicy="criticalpath" fontfillpolicy="criticalpath">
+	<columns>
+		<column field="ID" aligndata="center" width="40"/>
+		<column field="WBS" aligndata="left" width="50"/>
+		<column field="Name" aligndata="left" width="275"/>
+		<column field="Duration" width="60"/>
+		<column field="Baseline Start" format="1" aligndata="left" width="70"/>
+		<column field="Start" format="1" width="70"/>
+		<column field="Baseline Finish" format="1" aligndata="left" width="70"/>
+		<column field="Finish" format="1" width="70"/>
+	</columns>
+	<gantt>
+		<options/>
+		<grid id="summary" rows="3" cols="5" top="1" left="1" bottom="1" right="3" cliptext="no">
+			<row stretch="yes">
+				<cell halign="right" rowspan="3"/>
+				<cell halign="left"/>
+				<cell stretch="yes"/>
+				<cell halign="right"/>
+				<cell halign="left" rowspan="3"/>
+			</row>
+			<row>
+				<cell colspan="3"/>
+			</row>
+			<row stretch="yes">
+				<cell halign="left"/>
+				<cell/>
+				<cell halign="right"/>
+			</row>
+		</grid>
+		<grid id="task" rows="3" cols="5" top="1" left="1" bottom="1" right="3" cliptext="no">
+			<row stretch="yes">
+				<cell halign="right" rowspan="3"/>
+				<cell halign="left"/>
+				<cell stretch="yes"/>
+				<cell halign="right"/>
+				<cell halign="left" rowspan="3"/>
+			</row>
+			<row>
+				<cell colspan="3"/>
+			</row>
+			<row stretch="yes">
+				<cell halign="left"/>
+				<cell/>
+				<cell halign="right"/>
+			</row>
+		</grid>
+		<grid id="milestone" rows="3" cols="5" top="1" left="1" bottom="1" right="3" cliptext="no">
+			<row stretch="yes">
+				<cell halign="right" right_p="7.2pt" rowspan="3"/>
+				<cell halign="left"/>
+				<cell stretch="yes"/>
+				<cell halign="right"/>
+				<cell halign="left" left_p="7.2pt" rowspan="3"/>
+			</row>
+			<row>
+				<cell colspan="3"/>
+			</row>
+			<row stretch="yes">
+				<cell halign="left"/>
+				<cell/>
+				<cell halign="right"/>
+			</row>
+		</grid>
+		<timescale tier="0"/>
+		<timescale tier="1"/>
+		<line id="start"/>
+		<line id="finish"/>
+		<line id="status"/>
+		<line id="current"/>
+		<line id="row"/>
+		<line id="timescale"/>
+		<line id="uppertimescale"/>
+		<bar id="Critical Task" width="full" style="framedsolid" color="red"/>
+		<bar id="Critical Milestone" width="none" color="red">
+			<marker id="start" shape="diamond" color="red" style="framedsolid"/>
+			<marker id="end" style="framedsolid"/>
+		</bar>
+		<bar id="Critical Summary" align="bottom" style="framedsolid">
+			<marker id="start" shape="bracket_down"/>
+			<marker id="end" shape="bracket_down"/>
+		</bar>
+		<bar id="Noncritical Task" width="full" style="framedsolid" color="blue"/>
+		<bar id="Noncritical Milestone" width="none" color="blue">
+			<marker id="start" shape="diamond" color="blue" style="framedsolid"/>
+		</bar>
+		<bar id="Noncritical Summary" style="framedsolid">
+			<marker id="start" shape="bracket_down"/>
+			<marker id="end" shape="bracket_down"/>
+		</bar>
+		<bar id="External Task" width="full" color="gray"/>
+		<flexbar id="Baseline Milestone" applyto="milestones" startfield="Baseline Start" endfield="Baseline Finish">
+			<bar width="none">
+				<marker id="start" shape="diamond" style="outline"/>
+			</bar>
+		</flexbar>
+		<flexbar id="Baseline Task" row="-1" startfield="Baseline Start" endfield="Baseline Finish">
+			<bar align="bottom" style="outline"/>
+		</flexbar>
+	</gantt>
+	<sheetcell id="Critical Task" font-size="10pt"/>
+	<sheetcell id="Critical Milestone" font-size="10pt"/>
+	<sheetcell id="Critical Summary" font-size="10pt" bold="yes"/>
+	<sheetcell id="Noncritical Task" font-size="10pt"/>
+	<sheetcell id="Noncritical Milestone" font-size="10pt"/>
+	<sheetcell id="Noncritical Summary" font-size="10pt" bold="yes"/>
+	<sheetcell id="External Task" font-size="10pt"/>
+	<sheetcell id="No Flag Task" font-size="9pt"/>
+	<sheetcell id="No Flag Summary" font-size="9pt"/>
+	<sheetcell id="Flag1" font-size="9pt"/>
+	<sheetcell id="Flag2" font-size="9pt"/>
+	<sheetcell id="Flag3" font-size="9pt"/>
+	<sheetcell id="Flag4" font-size="9pt"/>
+	<sheetcell id="Flag5" font-size="9pt"/>
+	<sheetcell id="Flag6" font-size="9pt"/>
+	<sheetcell id="Flag7" font-size="9pt"/>
+	<sheetcell id="Flag8" font-size="9pt"/>
+	<sheetcell id="Flag9" font-size="9pt"/>
+	<sheetcell id="Flag10" font-size="9pt"/>
+	<sheetcell id="Flag11" font-size="9pt"/>
+	<sheetcell id="Flag12" font-size="9pt"/>
+	<sheetcell id="Flag13" font-size="9pt"/>
+	<sheetcell id="Flag14" font-size="9pt"/>
+	<sheetcell id="Flag15" font-size="9pt"/>
+	<sheetcell id="Flag16" font-size="9pt"/>
+	<sheetcell id="Flag17" font-size="9pt"/>
+	<sheetcell id="Flag18" font-size="9pt"/>
+	<sheetcell id="Flag19" font-size="9pt"/>
+	<sheetcell id="Flag20" font-size="9pt"/>
+	<sheetcell id="Not Started Task" font-size="9pt"/>
+	<sheetcell id="Not Started Milestone" font-size="9pt"/>
+	<sheetcell id="Not Started Summary" font-size="9pt"/>
+	<sheetcell id="In Progress Task" font-size="9pt"/>
+	<sheetcell id="In Progress Summary" font-size="9pt"/>
+	<sheetcell id="Completed Task" font-size="9pt"/>
+	<sheetcell id="Completed Milestone" font-size="9pt"/>
+	<sheetcell id="Completed Summary" font-size="9pt"/>
+	<sheetcell id="Level 0 (Project Summary)" font-size="9pt"/>
+	<sheetcell id="Level 1 Summary" font-size="9pt"/>
+	<sheetcell id="Level 1 Task" font-size="9pt"/>
+	<sheetcell id="Level 2 Summary" font-size="9pt"/>
+	<sheetcell id="Level 2 Task" font-size="9pt"/>
+	<sheetcell id="Level 3 Summary" font-size="9pt"/>
+	<sheetcell id="Level 3 Task" font-size="9pt"/>
+	<sheetcell id="Level 4 Summary" font-size="9pt"/>
+	<sheetcell id="Level 4 Task" font-size="9pt"/>
+	<sheetcell id="Level 5 Summary" font-size="9pt"/>
+	<sheetcell id="Level 5 Task" font-size="9pt"/>
+	<sheetcell id="Level 6 Summary" font-size="9pt"/>
+	<sheetcell id="Level 6 Task" font-size="9pt"/>
+	<sheetcell id="Level 7 Summary" font-size="9pt"/>
+	<sheetcell id="Level 7 Task" font-size="9pt"/>
+	<sheetcell id="Level 8 Summary" font-size="9pt"/>
+	<sheetcell id="Level 8 Task" font-size="9pt"/>
+	<sheetcell id="Level 9 Summary" font-size="9pt"/>
+	<sheetcell id="Level 9 Task" font-size="9pt"/>
+	<sheetcell id="Level 10 Summary" font-size="9pt"/>
+	<sheetcell id="Level 10 Task" font-size="9pt"/>
+	<sheetcell id="Level 11 Summary" font-size="9pt"/>
+	<sheetcell id="Level 11 Task" font-size="9pt"/>
+	<sheetcell id="Level 12 Summary" font-size="9pt"/>
+	<sheetcell id="Level 12 Task" font-size="9pt"/>
+	<sheetcell id="Level 13 Summary" font-size="9pt"/>
+	<sheetcell id="Level 13 Task" font-size="9pt"/>
+	<sheetcell id="Level 14 Summary" font-size="9pt"/>
+	<sheetcell id="Level 14 Task" font-size="9pt"/>
+	<sheetcell id="Level 15 Summary" font-size="9pt"/>
+	<sheetcell id="Level 15 Task" font-size="9pt"/>
+	<sheetcell id="Level 16 Summary" font-size="9pt"/>
+	<sheetcell id="Level 16 Task" font-size="9pt"/>
+	<sheetcell id="Level 17 Summary" font-size="9pt"/>
+	<sheetcell id="Level 17 Task" font-size="9pt"/>
+	<sheetcell id="Level 18 Summary" font-size="9pt"/>
+	<sheetcell id="Level 18 Task" font-size="9pt"/>
+	<sheetcell id="Level 19 Summary" font-size="9pt"/>
+	<sheetcell id="Level 19 Task" font-size="9pt"/>
+	<sheetcell id="Level 20 Summary" font-size="9pt"/>
+	<sheetcell id="Level 20 Task" font-size="9pt"/>
+	<groupspec>
+	</groupspec>
+</ts_view>

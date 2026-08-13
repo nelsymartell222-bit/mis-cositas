@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<nd_view pagelayout="Network Chart Page Layout" borderpolicy="criticalpath" borderfillpolicy="criticalpath" bordershadowpolicy="criticalpath" field="Duration" hspacing="5.05pt">
+	<border id="Critical Task" shcolor="red" bkcolor="lightyellow" bkstyle="gradient_top_bottom">
+		<border_edge id="top" bkcolor="red"/>
+		<border_edge id="left" shape="rect" depth="5.1pt" bkcolor="red"/>
+		<border_edge id="bottom" bkcolor="red"/>
+		<border_edge id="right" shape="rect" depth="5.1pt" bkcolor="red"/>
+	</border>
+	<border id="Critical Milestone" shcolor="red" bkcolor="lightyellow" bkstyle="gradient_top_bottom">
+		<border_edge id="top" bkcolor="red"/>
+		<border_edge id="left" shape="triangle" depth="5.1pt" bkcolor="red"/>
+		<border_edge id="bottom" bkcolor="red"/>
+		<border_edge id="right" shape="triangle" depth="5.1pt" bkcolor="red"/>
+	</border>
+	<border id="Critical Summary" shcolor="red" bkcolor="lightyellow" bkstyle="gradient_top_bottom">
+		<border_edge id="top" shape="rect" depth="5.1pt" bkcolor="red"/>
+		<border_edge id="left" bkcolor="red"/>
+		<border_edge id="bottom" shape="rect" depth="5.1pt" bkcolor="red"/>
+		<border_edge id="right" bkcolor="red"/>
+	</border>
+	<border id="Noncritical Task" shcolor="blue" bkcolor="lightyellow" bkstyle="gradient_top_bottom">
+		<border_edge id="top" bkcolor="blue"/>
+		<border_edge id="left" shape="rect" depth="5.1pt" bkcolor="blue"/>
+		<border_edge id="bottom" bkcolor="blue"/>
+		<border_edge id="right" shape="rect" depth="5.1pt" bkcolor="blue"/>
+	</border>
+	<border id="Noncritical Milestone" shcolor="blue" bkcolor="lightyellow" bkstyle="gradient_top_bottom">
+		<border_edge id="top" bkcolor="blue"/>
+		<border_edge id="left" shape="triangle" depth="5.1pt" bkcolor="blue"/>
+		<border_edge id="bottom" bkcolor="blue"/>
+		<border_edge id="right" shape="triangle" depth="5.1pt" bkcolor="blue"/>
+	</border>
+	<border id="Noncritical Summary" shcolor="blue" bkcolor="lightyellow" bkstyle="gradient_top_bottom">
+		<border_edge id="top" shape="rect" depth="5.1pt" bkcolor="blue"/>
+		<border_edge id="left" bkcolor="blue"/>
+		<border_edge id="bottom" shape="rect" depth="5.1pt" bkcolor="blue"/>
+		<border_edge id="right" bkcolor="blue"/>
+	</border>
+	<border id="External Task" bkcolor="lightyellow" bkstyle="gradient_top_bottom">
+		<border_edge id="top" bkcolor="gray"/>
+		<border_edge id="left" shape="rect" depth="5.1pt" bkcolor="gray"/>
+		<border_edge id="bottom" bkcolor="gray"/>
+		<border_edge id="right" shape="rect" depth="5.1pt" bkcolor="gray"/>
+	</border>
+	<grid id="task" rows="4" cols="2" top="1" bottom="2">
+		<row>
+			<cell field="Early Start" format="1" halign="left" font-size="9pt" left_p="0pt" right_p="0pt" top_p="0pt" bottom_p="0pt"/>
+			<cell field="Early Finish" format="1" halign="right" font-size="9pt" left_p="0pt" right_p="0pt" top_p="0pt" bottom_p="0pt"/>
+		</row>
+		<row stretch="yes">
+			<cell field="Name" type="wraptext" font-size="9pt" bold="yes" left_p="1.45pt" right_p="1.45pt" top_p="0.7pt" bottom_p="0.7pt" bottom_s="solid" colspan="2" charlen="25"/>
+		</row>
+		<row>
+			<cell field="Duration" format="5" font-size="9pt" label="Dur: " left_p="1.45pt" right_p="1.45pt" top_p="0.7pt" bottom_p="0.7pt" right_s="solid" top_s="solid"/>
+			<cell field="Total Slack" format="5" font-size="9pt" label="Slack: " left_p="1.45pt" right_p="1.45pt" top_p="0.7pt" bottom_p="0.7pt" left_s="solid" top_s="solid"/>
+		</row>
+		<row>
+			<cell field="Late Start" format="1" halign="left" font-size="9pt" left_p="0pt" right_p="0pt" top_p="0pt" bottom_p="0pt"/>
+			<cell field="Late Finish" format="1" halign="right" font-size="9pt" left_p="0pt" right_p="0pt" top_p="0pt" bottom_p="0pt"/>
+		</row>
+	</grid>
+	<dependencies chstyle="medium">
+		<line id="critical" width="1pt">
+			<arrow id="to" size="9pt"/>
+		</line>
+		<line id="noncritical" width="1pt">
+			<arrow id="to" size="9pt"/>
+		</line>
+	</dependencies>
+	<group nameformat="1">
+		<cell halign="left" font-size="10pt" bold="yes" bkcolor="#D2F5FF" left_p="3.6pt" right_p="3.6pt" top_p="1.45pt" bottom_p="1.45pt" top_s="solid" bottom_s="solid" top_c="#46AAC5" bottom_c="#46AAC5"/>
+		<cell halign="left" font-size="10pt" bold="yes" bkcolor="#D2F5FF" left_p="3.6pt" right_p="3.6pt" top_p="1.45pt" bottom_p="1.45pt" top_s="solid" bottom_s="solid" top_c="#46AAC5" bottom_c="#46AAC5"/>
+		<cell halign="left" font-size="10pt" bold="yes" bkcolor="#D2F5FF" left_p="3.6pt" right_p="3.6pt" top_p="1.45pt" bottom_p="1.45pt" top_s="solid" bottom_s="solid" top_c="#46AAC5" bottom_c="#46AAC5"/>
+		<cell halign="left" font-size="10pt" bold="yes" bkcolor="#D2F5FF" left_p="3.6pt" right_p="3.6pt" top_p="1.45pt" bottom_p="1.45pt" top_s="solid" bottom_s="solid" top_c="#46AAC5" bottom_c="#46AAC5"/>
+		<cell halign="left" font-size="10pt" bold="yes" bkcolor="#D2F5FF" left_p="3.6pt" right_p="3.6pt" top_p="1.45pt" bottom_p="1.45pt" top_s="solid" bottom_s="solid" top_c="#46AAC5" bottom_c="#46AAC5"/>
+		<cell halign="left" font-size="10pt" bold="yes" bkcolor="#D2F5FF" left_p="3.6pt" right_p="3.6pt" top_p="1.45pt" bottom_p="1.45pt" top_s="solid" bottom_s="solid" top_c="#46AAC5" bottom_c="#46AAC5"/>
+		<cell halign="left" font-size="10pt" bold="yes" bkcolor="#D2F5FF" left_p="3.6pt" right_p="3.6pt" top_p="1.45pt" bottom_p="1.45pt" top_s="solid" bottom_s="solid" top_c="#46AAC5" bottom_c="#46AAC5"/>
+		<cell halign="left" font-size="10pt" bold="yes" bkcolor="#D2F5FF" left_p="3.6pt" right_p="3.6pt" top_p="1.45pt" bottom_p="1.45pt" top_s="solid" bottom_s="solid" top_c="#46AAC5" bottom_c="#46AAC5"/>
+		<cell halign="left" font-size="10pt" bold="yes" bkcolor="#D2F5FF" left_p="3.6pt" right_p="3.6pt" top_p="1.45pt" bottom_p="1.45pt" top_s="solid" bottom_s="solid" top_c="#46AAC5" bottom_c="#46AAC5"/>
+		<cell halign="left" font-size="10pt" bold="yes" bkcolor="#D2F5FF" left_p="3.6pt" right_p="3.6pt" top_p="1.45pt" bottom_p="1.45pt" top_s="solid" bottom_s="solid" top_c="#46AAC5" bottom_c="#46AAC5"/>
+	</group>
+	<timescale range="yes">
+		<cell font-size="9pt" bold="yes" bkcolor="#DAFDA8" left_p="2.9pt" right_p="2.9pt" top_p="1.45pt" bottom_p="1.45pt"/>
+		<line style="solid" width="0pt" color="black"/>
+	</timescale>
+	<groupspec showempty="yes">
+	</groupspec>
+</nd_view>

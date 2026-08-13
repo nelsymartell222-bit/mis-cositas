@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<wbs_view pagelayout="WBS Chart Page Layout" defaultarrange="wbs" borderpolicy="criticalpath" borderfillpolicy="criticalpath" bordershadowpolicy="criticalpath">
+	<connector crstyle="curve">
+		<line id="in" color="dimgray"/>
+		<line id="out" color="dimgray"/>
+		<line id="common" color="dimgray"/>
+	</connector>
+	<item id="summary" drop="14.4pt" before="5.05pt"/>
+	<item id="task" before="3.6pt" listmode="stemleft"/>
+	<border id="Critical Task" style="null" shcolor="darkgray" color="red" bkcolor="none">
+		<border_edge id="top" color="red"/>
+		<border_edge id="left" color="red"/>
+		<border_edge id="bottom" color="red"/>
+		<border_edge id="right" color="red"/>
+	</border>
+	<border id="Critical Milestone" style="null" shcolor="darkgray" color="red" bkcolor="none">
+		<border_edge id="top" color="red"/>
+		<border_edge id="left" color="red"/>
+		<border_edge id="bottom" color="red"/>
+		<border_edge id="right" color="red"/>
+	</border>
+	<border id="Critical Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="2.25pt" shcolor="darkgray" color="#46AAC5" bkcolor="#B5EEFF" bkstyle="gradient_top_bottom">
+		<border_edge id="top" width="1.5pt" color="#46AAC5"/>
+		<border_edge id="left" width="1.5pt" color="#46AAC5"/>
+		<border_edge id="bottom" width="1.5pt" color="#46AAC5"/>
+		<border_edge id="right" width="1.5pt" color="#46AAC5"/>
+	</border>
+	<border id="Noncritical Task" style="null" shcolor="darkgray" color="blue" bkcolor="none">
+		<border_edge id="top" color="blue"/>
+		<border_edge id="left" color="blue"/>
+		<border_edge id="bottom" color="blue"/>
+		<border_edge id="right" color="blue"/>
+	</border>
+	<border id="Noncritical Milestone" style="null" shcolor="darkgray" color="blue" bkcolor="none">
+		<border_edge id="top" color="blue"/>
+		<border_edge id="left" color="blue"/>
+		<border_edge id="bottom" color="blue"/>
+		<border_edge id="right" color="blue"/>
+	</border>
+	<border id="Noncritical Summary" shape="curved_rect" width="1.5pt" shdir="bottom_right" shdepth="2.25pt" shcolor="darkgray" color="#46AAC5" bkcolor="#B5EEFF" bkstyle="gradient_top_bottom">
+		<border_edge id="top" width="1.5pt" color="#46AAC5"/>
+		<border_edge id="left" width="1.5pt" color="#46AAC5"/>
+		<border_edge id="bottom" width="1.5pt" color="#46AAC5"/>
+		<border_edge id="right" width="1.5pt" color="#46AAC5"/>
+	</border>
+	<border id="External Task" shcolor="darkgray"/>
+	<grid id="summary" rows="1" cols="1">
+		<row>
+			<cell field="Name" format="1" type="wraptext" font-size="9pt" bold="yes" left_p="2.15pt" right_p="2.15pt" top_p="3.6pt" bottom_p="3.6pt" charlen="20"/>
+		</row>
+	</grid>
+	<grid id="task" rows="1" cols="1">
+		<row>
+			<cell field="Name" type="wraptext" halign="left" font-size="9pt" bold="yes" left_p="0.7pt" right_p="0pt" top_p="0pt" bottom_p="0pt" charlen="20"/>
+		</row>
+	</grid>
+	<groupspec>
+	</groupspec>
+</wbs_view>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Dodge - Arcade Pro</title>
+  <link rel="stylesheet" href="./assets/css/game.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="./index.html" class="nav-btn">⚡ Inicio</a>
+    <a href="./game.html" class="nav-btn active">🎮 Cyber Runner</a>
+    <button id="gameThemeBtn" class="nav-btn" onclick="toggleDarkMode()">🌙 Modo</button>
+  </nav>
+
+  <main class="game-wrapper">
+    <div class="game-header">
+      <h2>CYBER DODGE 2D</h2>
+      <div class="scoreboard">
+        <div>SCORE: <span id="current-score">0</span></div>
+        <div>HIGH SCORE: <span id="high-score">0</span></div>
+      </div>
+    </div>
+
+    <div class="canvas-container">
+      <canvas id="gameCanvas" width="600" height="400"></canvas>
+
+      <div id="game-over-screen" class="overlay hidden">
+        <h3 class="danger-text">SYSTEM COLLISION DETECTED</h3>
+        <p>Puntaje Final: <span id="final-score">0</span></p>
+        <button class="btn-pro" onclick="iniciarJuego()">REINTENTAR</button>
+      </div>
+
+      <div id="start-screen" class="overlay">
+        <h3>CONTROLES</h3>
+        <p>Usa las Flechas / WASD o arrastra el mouse/dedo para esquivar los bloques.</p>
+        <button class="btn-pro" onclick="iniciarJuego()">INICIAR MISION</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="./assets/js/game.js"></script>
+</body>
+</html>

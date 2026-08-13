@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nelsy Universe ✨ - Ultra Portal Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/styles.css">
+</head>
+<body>
+
+    <div class="contenedor-universo" id="universoBox"></div>
+
+    <!-- HEADER -->
+    <header class="header-kawaii">
+        <div class="logo-kawaii">🌸 Nelsy Universe</div>
+        
+        <div class="header-controles">
+            <button class="theme-btn" id="btnTheme" onclick="toggleDarkMode()">🌙 Modo Noche</button>
+
+            <div class="reloj-box">
+                <span id="iconoHora">☀️</span>
+                <span id="relojTexto">00:00:00</span>
+            </div>
+
+            <div class="audio-shell">
+                <audio id="miAudio" controls>
+                    <source src="./musica.mp3.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+        </div>
+    </header>
+
+    <!-- DASHBOARD -->
+    <div class="dashboard-layout">
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar-izq">
+            <div class="perfil-badge">
+                <div style="font-size: 2.2rem;">✨</div>
+                <div style="font-size: 1.2rem; margin-top: 5px;">Nelsy M.</div>
+                <div style="font-size: 0.85rem; opacity: 0.9;">Dev & Creator 💻</div>
+            </div>
+
+            <!-- MASCOTA VIRTUAL -->
+            <div class="pet-widget">
+                <div class="pet-avatar" id="petEmoji" style="cursor: pointer;" onmouseover="acariciarMascota()" title="Acaricia a Kiki 💕">🐱</div>
+                <div style="font-size: 0.85rem; font-weight: bold; margin-top: 4px;">Kiki el Gatito</div>
+                <div style="font-size: 0.7rem; opacity: 0.85; margin-top: 5px; line-height: 1.4;">
+                    <div>🍗 Hambre: <span id="petHambre">80</span>%</div>
+                    <div>💖 Amor: <span id="petLove">100</span>%</div>
+                </div>
+            </div>
+
+            <button class="menu-btn activo" onclick="irACapa('inicio', this)">💖 Inicio</button>
+            <button class="menu-btn" onclick="irACapa('kiki', this)">🐱 Kiki</button>
+            <button class="menu-btn" onclick="irACapa('metas', this)">📝 Mis Pendientes</button>
+            <button class="menu-btn" onclick="irACapa('calculadora', this)">🧮 Calculadora</button>
+            <button class="menu-btn" onclick="irACapa('muro', this)">💌 Muro Público</button>
+            <a class="menu-btn" href="./game.html" style="display: inline-flex; align-items: center; justify-content: center; text-decoration: none; text-align: center;">🎮 Minijuego</a>
+        </aside>
+
+        <!-- CONTENIDO -->
+        <main class="panel-contenido">
+            
+            <!-- INICIO -->
+            <div id="inicio" class="capa activa">
+                <h2 id="saludoBienvenida">¡Bienvenida a mi espacio! ✨</h2>
+
+                <div class="mood-box">
+                    <span style="font-weight: bold; font-size: 0.9rem;">¿Cómo estás hoy?</span>
+                    <button class="mood-btn" onclick="cambiarMood('⚡ Modo Foco', '¡A darle con todo al código hoy! 🔥')">⚡ Enfocada</button>
+                    <button class="mood-btn" onclick="cambiarMood('☕ Modo Chill', 'Un cafecito y buenas canciones para acompañar 🎵')">☕ Chill</button>
+                    <button class="mood-btn" onclick="cambiarMood('🎨 Inspirada', '¡Creando cosas hermosas e interactivas! ✨')">🎨 Creativa</button>
+                </div>
+
+                <div class="quick-grid">
+                    <div class="mini-card pink-card">
+                        <span class="mini-icon">☕</span>
+                        <h3>Ritual del día</h3>
+                        <p>cafecito, música suave y 20 minutos de focus total.</p>
+                    </div>
+                    <div class="mini-card purple-card">
+                        <span class="mini-icon">💖</span>
+                        <h3>Vibe actual</h3>
+                        <p>energía tierna, creativa y con ganas de crear cosas lindas.</p>
+                    </div>
+                    <div class="mini-card gold-card">
+                        <span class="mini-icon">✨</span>
+                        <h3>Meta del día</h3>
+                        <p>terminar una idea hermosa y cuidarme sin apurarme.</p>
+                    </div>
+                </div>
+                
+                <p id="mensajeMood">Explora los widgets, visita a Kiki para cuidarla, o déjame una firma en el muro.</p>
+                
+                <!-- FORTUNE COOKIE / ORÁCULO -->
+                <div class="oracle-container">
+                    <h3 style="margin-top:0; color: var(--amarillo-estrella);">🥠 Galleta de la Suerte Dev</h3>
+                    <p id="oracleText" style="font-style: italic;">Haz clic para romper tu galleta...</p>
+                    <button class="btn-muro" onclick="revelarSuerte()">Abrir Galleta ✨</button>
+                </div>
+            </div>
+
+            <!-- KIKI EL GATITO -->
+            <div id="kiki" class="capa">
+                <h2 style="text-align: center;">🐱 Kiki el Gatito - Cuida de Mí 💖</h2>
+                
+                <div style="display: flex; justify-content: center; align-items: center; margin-top: 30px;">
+                    <!-- Kiki Widget Hermosa -->
+                    <div style="flex: 0 0 100%; max-width: 600px;">
+                        <div class="mascota-container" id="kiki-widget-main">
+                            <div class="mascota-contenido">
+                                <!-- Título de la Mascota -->
+                                <div class="titulo-mascota">✨ Kiki el Gatito ✨</div>
+
+                                <!-- Bocadillo de Diálogo -->
+                                <div id="mascota-dialogo" class="dialogo-bubble">¡Hola amiga! ¿Viniste a visitarme? 🥰</div>
+
+                                <!-- Avatar de la Mascota -->
+                                <div id="mascota-avatar" class="mascota-avatar" onmouseover="acariciarMascota()" style="cursor: pointer;" title="Acaricia a Kiki 💕">🐱</div>
+
+                                <!-- Barras de Estado -->
+                                <div class="stats-container">
+                                    <div class="stat-box">
+                                        <span>🍗 Hambre:</span>
+                                        <div class="bar-bg"><div id="bar-hambre" class="bar-fill"></div></div>
+                                    </div>
+                                    <div class="stat-box">
+                                        <span>💖 Felicidad:</span>
+                                        <div class="bar-bg"><div id="bar-felicidad" class="bar-fill"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones de Comida Abajo -->
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 30px; padding: 0 20px;">
+                            <button class="btn-comida-accion" onclick="alimentarMascota('mango', 20); playSound('pop');">🥭 Dale Mango<br><small>+20 hambre</small></button>
+                            <button class="btn-comida-accion" onclick="alimentarMascota('sushi', 30); playSound('pop');">🍣 Dale Sushi<br><small>+30 hambre</small></button>
+                            <button class="btn-comida-accion" onclick="alimentarMascota('boba', 15); playSound('pop');">🧋 Dale Boba<br><small>+15 hambre</small></button>
+                            <button class="btn-comida-accion" onclick="alimentarMascota('pizza', 25); playSound('pop');">🍕 Dale Pizza<br><small>+25 hambre</small></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PENDIENTES -->
+            <div id="metas" class="capa">
+                <h2>Mis Objetivos & Tareas 📝</h2>
+                <p>Anota y gestiona tus metas con guardado automático:</p>
+                <div class="task-container">
+                    <div class="task-input-box">
+                        <input type="text" id="nuevaTareaInput" class="task-input" placeholder="Escribe una nueva tarea...">
+                        <button class="btn-muro" onclick="agregarTarea()">Agregar ✨</button>
+                    </div>
+                    <ul class="task-list" id="listaTareas"></ul>
+                </div>
+            </div>
+
+            <!-- CALCULADORA -->
+            <div id="calculadora" class="capa">
+                <h2 style="text-align: center;">Calculadora Kawaii ✨</h2>
+                <div class="calc-wrapper">
+                    <input type="text" class="pantalla" id="resultado" readonly value="0">
+                    <div class="botones-calc">
+                        <button onclick="limpiar(); playSound('pop');">C</button>
+                        <button class="op-btn" onclick="agregar('/'); playSound('pop');">÷</button>
+                        <button class="op-btn" onclick="agregar('*'); playSound('pop');">×</button>
+                        <button class="op-btn" onclick="agregar('-'); playSound('pop');">-</button>
+
+                        <button onclick="agregar('7'); playSound('pop');">7</button>
+                        <button onclick="agregar('8'); playSound('pop');">8</button>
+                        <button onclick="agregar('9'); playSound('pop');">9</button>
+                        <button class="op-btn" onclick="agregar('+'); playSound('pop');">+</button>
+
+                        <button onclick="agregar('4'); playSound('pop');">4</button>
+                        <button onclick="agregar('5'); playSound('pop');">5</button>
+                        <button onclick="agregar('6'); playSound('pop');">6</button>
+                        <button style="background:var(--rosa-pastel)!important; color:white;" onclick="completado();">🌸</button>
+
+                        <button onclick="agregar('1'); playSound('pop');">1</button>
+                        <button onclick="agregar('2'); playSound('pop');">2</button>
+                        <button onclick="agregar('3'); playSound('pop');">3</button>
+                        <button class="igual-btn" onclick="calcular()">=</button>
+
+                        <button onclick="agregar('0'); playSound('pop');" style="grid-column: span 2;">0</button>
+                        <button onclick="agregar('.'); playSound('pop');">.</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MURO -->
+            <div id="muro" class="capa">
+                <h2>Muro de Firmas 💌</h2>
+                <div class="caja-muro">
+                    <input type="text" id="nombreAmigo" class="input-muro" placeholder="Tu nombre ✨">
+                    <textarea id="textoMensaje" class="input-muro" placeholder="Deja un mensaje lindo..." rows="2"></textarea>
+                    <button class="btn-muro" onclick="guardarMensaje()">Enviar 💖</button>
+                    <div class="lista-mensajes" id="cajaMensajes"></div>
+                </div>
+            </div>
+
+            <!-- JUEGO -->
+            <div id="juego" class="capa">
+                <h2>Atrapa la Magia 🎮</h2>
+                <p>Puntos: <strong id="puntajeJuego" style="color: var(--rosa-brillante); font-size: 1.3rem;">0</strong></p>
+                <div class="zona-juego" id="zonaJuego">
+                    <div id="spawnCorazon"></div>
+                </div>
+                <button class="btn-muro" style="margin-top: 15px;" onclick="iniciarJuego()">¡Iniciar Juego!</button>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="./assets/js/main.js"></script>
+</body>
+</html>

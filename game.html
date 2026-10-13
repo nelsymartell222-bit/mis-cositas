@@ -3,363 +3,367 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multiverso Interdimensional - Game</title>
+    <title>Multiverse Odyssey - Hardcore Game</title>
     <style>
-        :root {
-            /* Paleta de Colores de Rick y Morty */
-            --rick-bg: #0b0e14;          /* Espacio profundo */
-            --portal-green: #a6e22e;     /* Verde verde portal radioactivo */
-            --portal-glow: #00ff66;      /* Brillo portal */
-            --rick-blue: #00d2ff;        /* Azul camisa Rick / tecnología */
-            --morty-yellow: #ffe600;     /* Amarillo camisa Morty */
-            --space-purple: #1f0836;     /* Nebulosa morada */
-            --hazard-red: #ff0055;       /* Rojo peligro */
-        }
-
-        * {
-            box-sizing: border-box;
+        body {
             margin: 0;
             padding: 0;
-        }
-
-        body {
-            background-color: var(--rick-bg);
-            background-image: radial-gradient(circle at 50% 50%, var(--space-purple) 0%, var(--rick-bg) 80%);
-            color: #ffffff;
+            background-color: #05070b;
+            color: #fff;
             font-family: 'Courier New', Courier, monospace;
             overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
             user-select: none;
         }
 
-        /* Encabezado Estilo Rick & Morty */
-        #game-header {
-            width: 100%;
-            padding: 12px 25px;
-            background: rgba(11, 14, 20, 0.85);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 3px solid var(--portal-green);
-            box-shadow: 0 0 20px var(--portal-glow);
-            z-index: 10;
+        #game-container {
             position: relative;
+            box-shadow: 0 0 40px rgba(0, 255, 102, 0.3);
+            border: 2px solid #a6e22e;
         }
 
-        #scoreboard {
-            font-size: 1.6rem;
-            color: var(--rick-blue);
-            text-shadow: 0 0 10px var(--rick-blue);
-            font-weight: bold;
+        canvas {
+            display: block;
+            background: radial-gradient(circle at 50% 50%, #111a2e 0%, #05070b 90%);
         }
 
-        #lives-container {
-            font-size: 1.6rem;
-            display: flex;
-            gap: 10px;
-            color: var(--morty-yellow);
-            text-shadow: 0 0 10px var(--morty-yellow);
-        }
-
-        #game-area {
-            position: relative;
-            width: 100vw;
-            height: calc(100vh - 65px);
-            cursor: crosshair;
-        }
-
-        /* Nave Espacial con Avatar de la Pareja */
-        #couple-ship {
-            position: absolute;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 140px;
-            height: 140px;
-            z-index: 5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.1s ease;
-        }
-
-        /* La imagen de ustedes dos dentro de la cabina */
-        #avatar-photo {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            /* !!! COLOCA AQUÍ EL NOMBRE DE TU IMAGEN !!! */
-            background-image: url('./1000072370.jpg'); 
-            background-size: cover;
-            background-position: center;
-            border: 3px solid var(--portal-green);
-            box-shadow: 0 0 15px var(--portal-glow);
-            z-index: 2;
-        }
-
-        /* La Nave Espacial */
-        .spaceship-body {
-            position: absolute;
-            bottom: 0;
-            width: 130px;
-            height: 45px;
-            background: linear-gradient(180deg, #607d8b, #263238);
-            border-radius: 50px 50px 20px 20px;
-            border: 2px solid var(--rick-blue);
-            box-shadow: 0 0 15px var(--rick-blue), inset 0 0 10px #000;
-            z-index: 1;
-        }
-
-        /* Luces Neón de la Nave */
-        .spaceship-body::after {
-            content: '';
-            position: absolute;
-            bottom: 5px;
-            left: 20px;
-            right: 20px;
-            height: 6px;
-            background: var(--portal-green);
-            border-radius: 10px;
-            box-shadow: 0 0 10px var(--portal-glow);
-        }
-
-        /* Nodos/Portales que salen */
-        .portal-node {
-            position: absolute;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--portal-green) 20%, #000 80%);
-            border: 3px solid var(--portal-glow);
-            box-shadow: 0 0 20px var(--portal-glow);
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.4rem;
-            animation: portalSpin 0.4s ease-out;
-        }
-
-        /* Trampas / Parásitos / Virus */
-        .portal-node.hazard {
-            background: radial-gradient(circle, var(--hazard-red) 20%, #000 80%);
-            border: 3px solid var(--hazard-red);
-            box-shadow: 0 0 20px var(--hazard-red);
-        }
-
-        @keyframes portalSpin {
-            0% { transform: scale(0) rotate(180deg); opacity: 0; }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
-        }
-
-        /* Pantalla de Game Over Interdimensional */
-        #game-over-screen {
+        /* Pantalla de Inicio / Game Over sobre el Canvas */
+        #ui-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(11, 14, 20, 0.95);
-            display: none;
+            display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 20;
+            background: rgba(5, 7, 11, 0.9);
             text-align: center;
+            z-index: 10;
         }
 
-        #game-over-screen h2 {
-            font-size: 2.8rem;
-            color: var(--portal-green);
-            text-shadow: 0 0 25px var(--portal-glow);
-            margin-bottom: 15px;
+        h1 {
+            font-size: 2.5rem;
+            color: #00ff66;
+            text-shadow: 0 0 20px #00ff66;
+            margin-bottom: 10px;
         }
 
-        #final-score {
-            font-size: 1.5rem;
-            color: var(--rick-blue);
-            margin-bottom: 30px;
+        p {
+            font-size: 1.1rem;
+            color: #00d2ff;
+            margin-bottom: 25px;
+            max-width: 400px;
+            line-height: 1.5;
         }
 
-        .rick-btn {
+        .btn-arcade {
             padding: 15px 35px;
             font-size: 1.2rem;
             font-family: inherit;
             font-weight: bold;
             background: transparent;
-            color: var(--portal-green);
-            border: 3px solid var(--portal-green);
-            border-radius: 8px;
+            color: #00ff66;
+            border: 3px solid #00ff66;
+            border-radius: 6px;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 15px rgba(166, 226, 46, 0.4);
+            box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+            transition: all 0.2s ease;
         }
 
-        .rick-btn:hover {
-            background: var(--portal-green);
-            color: var(--rick-bg);
-            box-shadow: 0 0 35px var(--portal-glow);
+        .btn-arcade:hover {
+            background: #00ff66;
+            color: #05070b;
+            box-shadow: 0 0 30px #00ff66;
+            transform: scale(1.05);
+        }
+
+        .controls-info {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #888;
         }
     </style>
 </head>
 <body>
 
-    <header id="game-header">
-        <div id="scoreboard">PUNTOS: <span id="points">0</span></div>
-        <div id="lives-container">🧪🧪🧪</div>
-    </header>
-
-    <div id="game-area">
-        <!-- Nave con Foto de la Pareja -->
-        <div id="couple-ship">
-            <div id="avatar-photo"></div>
-            <div class="spaceship-body"></div>
-        </div>
-
-        <!-- Pantalla de Game Over -->
-        <div id="game-over-screen">
-            <h2>🌀 VIAJE DIMENSIONAL FALLIDO 🌀</h2>
-            <p id="final-score">Puntaje: 0</p>
-            <button class="rick-btn" onclick="reiniciarJuego()">ABRIR OTRO PORTAL</button>
+    <div id="game-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        
+        <div id="ui-overlay">
+            <h1 id="ui-title">MULTIVERSE ODYSSEY</h1>
+            <p id="ui-desc">Pilotea la nave a través del espacio dimensional. Destruye amenazas y sobrevive a las hordas del Consejo.</p>
+            <button class="btn-arcade" id="start-btn" onclick="iniciarPartida()">INICIAR MISIÓN</button>
+            <div class="controls-info">Controles: Movimiento [FLECHAS / WASD] | Disparo [ESPACIO]</div>
         </div>
     </div>
 
     <script>
-        let puntos = 0;
-        let vidas = 3;
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const overlay = document.getElementById('ui-overlay');
+        const uiTitle = document.getElementById('ui-title');
+        const uiDesc = document.getElementById('ui-desc');
+        const startBtn = document.getElementById('start-btn');
+
+        // Cargar la imagen de ustedes dos (Avatar)
+        const parejaImg = new Image();
+        parejaImg.src = './1000072370.jpg'; // Asegúrate que sea el nombre de tu foto
+
+        // Estado del juego
+        let juegoActivo = false;
+        let puntaje = 0;
+        let vidaMax = 100;
+        let vidaActual = 100;
         let nivel = 1;
-        let spawnRate = 1400;
-        let disappearTime = 2200;
-        let gameActive = false;
 
-        const gameArea = document.getElementById('game-area');
-        const pointsSpan = document.getElementById('points');
-        const livesContainer = document.getElementById('lives-container');
-        const gameOverScreen = document.getElementById('game-over-screen');
-        const finalScoreText = document.getElementById('final-score');
-        const ship = document.getElementById('couple-ship');
+        // Controles de teclado
+        const teclas = {};
+        window.addEventListener('keydown', e => teclas[e.code] = true);
+        window.addEventListener('keyup', e => teclas[e.code] = false);
 
-        function iniciarJuego() {
-            puntos = 0;
-            vidas = 3;
+        // Objeto Nave del Jugador
+        let jugador = {
+            x: canvas.width / 2,
+            y: canvas.height - 80,
+            ancho: 60,
+            alto: 60,
+            velocidad: 5,
+            radioColision: 25
+        };
+
+        let lasers = [];
+        let enemigos = [];
+        let balasEnemigas = [];
+        let estrellasFondo = [];
+
+        // Inicializar estrellas del fondo espacial
+        for(let i=0; i<100; i++) {
+            estrellasFondo.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                tam: Math.random() * 2,
+                vel: Math.random() * 2 + 0.5
+            });
+        }
+
+        function iniciarPartida() {
+            juegoActivo = true;
+            puntaje = 0;
+            vidaActual = 100;
             nivel = 1;
-            spawnRate = 1400;
-            disappearTime = 2200;
-            gameActive = true;
-            actualizarUI();
-            gameOverScreen.style.display = 'none';
-            document.querySelectorAll('.portal-node').forEach(n => n.remove());
-            gameLoop();
+            lasers = [];
+            enemigos = [];
+            balasEnemigas = [];
+            overlay.style.display = 'none';
+            ultimoDisparo = 0;
+            loopJuego();
         }
 
-        function gameLoop() {
-            if (!gameActive) return;
-            crearNodo();
-            setTimeout(() => {
-                if (gameActive) {
-                    if (puntos > 40 * nivel) subirDificultad();
-                    gameLoop();
-                }
-            }, spawnRate);
-        }
+        let ultimoDisparo = 0;
+        function actualizar() {
+            if (!juegoActivo) return;
 
-        function crearNodo() {
-            const nodo = document.createElement('div');
-            nodo.classList.add('portal-node');
-            
-            const esPeligro = Math.random() < 0.2 + (nivel * 0.02);
-            if (esPeligro) {
-                nodo.classList.add('hazard');
-                nodo.textContent = '👾';
-            } else {
-                nodo.textContent = '⚡';
+            // Movimiento del Jugador (WASD o Flechas)
+            if ((teclas['ArrowLeft'] || teclas['KeyA']) && jugador.x > jugador.ancho/2) jugador.x -= jugador.velocidad;
+            if ((teclas['ArrowRight'] || teclas['KeyD']) && jugador.x < canvas.width - jugador.ancho/2) jugador.x += jugador.velocidad;
+            if ((teclas['ArrowUp'] || teclas['KeyW']) && jugador.y > 60) jugador.y -= jugador.velocidad;
+            if ((teclas['ArrowDown'] || teclas['KeyS']) && jugador.y < canvas.height - jugador.alto/2) jugador.y += jugador.velocidad;
+
+            // Disparo con ESPACIO
+            let ahora = Date.now();
+            if (teclas['Space'] && ahora - ultimoDisparo > 180) {
+                lasers.push({ x: jugador.x, y: jugador.y - 30, vel: 9 });
+                ultimoDisparo = ahora;
             }
 
-            const randomX = Math.random() * (gameArea.clientWidth - 60);
-            const randomY = Math.random() * (gameArea.clientHeight - 180) + 20;
+            // Mover Lasers del Jugador
+            for (let i = lasers.length - 1; i >= 0; i--) {
+                lasers[i].y -= lasers[i].vel;
+                if (lasers[i].y < 0) lasers.splice(i, 1);
+            }
 
-            nodo.style.left = `${randomX}px`;
-            nodo.style.top = `${randomY}px`;
+            // Generar Enemigos Dinámicos
+            if (Math.random() < 0.025 + (nivel * 0.005)) {
+                enemigos.push({
+                    x: Math.random() * (canvas.width - 60) + 30,
+                    y: -40,
+                    ancho: 45,
+                    alto: 45,
+                    velY: Math.random() * 1.5 + 1 + (nivel * 0.2),
+                    vida: 2 + nivel,
+                    tipo: Math.random() < 0.7 ? 'nave' : 'boss'
+                });
+            }
 
-            nodo.addEventListener('mousedown', (e) => {
-                e.stopPropagation();
-                alTocarNodo(nodo, esPeligro);
+            // Mover Enemigos y Colisiones
+            for (let i = enemigos.length - 1; i >= 0; i--) {
+                let en = enemigos[i];
+                en.y += en.velY;
+
+                // Disparo de enemigos hacia el jugador (Bullet Hell)
+                if (Math.random() < 0.015) {
+                    balasEnemigas.push({ x: en.x, y: en.y, velX: (jugador.x - en.x) / 40, velY: 3 });
+                }
+
+                // Colisión con el Jugador
+                let distanciaJugador = Math.hypot(jugador.x - en.x, jugador.y - en.y);
+                if (distanciaJugador < jugador.radioColision + 20) {
+                    vidaActual -= 15;
+                    enemigos.splice(i, 1);
+                    if (vidaActual <= 0) terminarJuego();
+                    continue;
+                }
+
+                // Colisión con Lasers
+                for (let j = lasers.length - 1; j >= 0; j--) {
+                    let l = lasers[j];
+                    let distanciaLaser = Math.hypot(l.x - en.x, l.y - en.y);
+                    if (distanciaLaser < 30) {
+                        en.vida--;
+                        lasers.splice(j, 1);
+                        if (en.vida <= 0) {
+                            puntaje += 25 * nivel;
+                            enemigos.splice(i, 1);
+                            if (puntaje > nivel * 300) nivel++;
+                        }
+                        break;
+                    }
+                }
+
+                if (en && en.y > canvas.height + 50) enemigos.splice(i, 1);
+            }
+
+            // Mover Balas Enemigas
+            for (let i = balasEnemigas.length - 1; i >= 0; i--) {
+                let b = balasEnemigas[i];
+                b.x += b.velX;
+                b.y += b.velY;
+
+                let dist = Math.hypot(jugador.x - b.x, jugador.y - b.y);
+                if (dist < jugador.radioColision) {
+                    vidaActual -= 10;
+                    balasEnemigas.splice(i, 1);
+                    if (vidaActual <= 0) terminarJuego();
+                }
+
+                if (b.y > canvas.height || b.x < 0 || b.x > canvas.width) balasEnemigas.splice(i, 1);
+            }
+        }
+
+        function dibujar() {
+            // Limpiar Pantalla
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dibujar Fondo Estrellado
+            ctx.fillStyle = '#ffffff';
+            estrellasFondo.forEach(est => {
+                est.y += est.vel;
+                if (est.y > canvas.height) est.y = 0;
+                ctx.fillRect(est.x, est.y, est.tam, est.tam);
             });
 
-            gameArea.appendChild(nodo);
+            // Dibujar Lasers
+            ctx.fillStyle = '#00ff66';
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#00ff66';
+            lasers.forEach(l => {
+                ctx.fillRect(l.x - 3, l.y, 6, 18);
+            });
 
-            setTimeout(() => {
-                if (gameActive && nodo.parentNode) {
-                    if (!esPeligro) {
-                        sacudirNave();
-                        restarVida();
-                    }
-                    nodo.style.opacity = '0';
-                    setTimeout(() => { if (nodo.parentNode) nodo.remove(); }, 200);
-                }
-            }, disappearTime);
-        }
+            // Dibujar Balas Enemigas
+            ctx.fillStyle = '#ff0055';
+            ctx.shadowColor = '#ff0055';
+            balasEnemigas.forEach(b => {
+                ctx.beginPath();
+                ctx.arc(b.x, b.y, 5, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            ctx.shadowBlur = 0; // Reset sombra
 
-        function alTocarNodo(nodo, esPeligro) {
-            if (!gameActive) return;
+            // Dibujar Enemigos
+            enemigos.forEach(en => {
+                ctx.fillStyle = en.tipo === 'boss' ? '#ff0055' : '#9900ff';
+                ctx.strokeStyle = '#00d2ff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(en.x, en.y, 22, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+            });
 
-            if (esPeligro) {
-                puntos = Math.max(0, puntos - 10);
-                sacudirNave();
-                restarVida();
-            } else {
-                puntos += 10;
-                actualizarUI();
+            // --- DIBUJAR LA NAVE CON SU AVATAR (USTEDES DOS) ---
+            ctx.save();
+            ctx.translate(jugador.x, jugador.y);
+            
+            // Cuerpo exterior de la nave (Estilo Caza Espacial Rick & Morty)
+            ctx.fillStyle = '#1f2937';
+            ctx.strokeStyle = '#00d2ff';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(0, -35);
+            ctx.lineTo(30, 25);
+            ctx.lineTo(0, 15);
+            ctx.lineTo(-30, 25);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Dibujar su foto en el centro de la cabina (Circular)
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(0, -2, 20, 0, Math.PI * 2);
+            ctx.clip();
+            if (parejaImg.complete) {
+                ctx.drawImage(parejaImg, -20, -22, 40, 40);
             }
+            ctx.restore();
 
-            nodo.style.transform = 'scale(1.3)';
-            setTimeout(() => nodo.remove(), 100);
+            // Anillo de energía alrededor de la cabina
+            ctx.strokeStyle = '#00ff66';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(0, -2, 21, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.restore();
+
+            // HUD / Interfaz en pantalla (Vidas y Puntos)
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '18px "Courier New", monospace';
+            ctx.fillText(`PUNTOS: ${puntaje}`, 20, 35);
+            ctx.fillText(`NIVEL: ${nivel}`, 20, 65);
+
+            // Barra de Escudo / Vida
+            ctx.fillStyle = 'rgba(255,255,255,0.2)';
+            ctx.fillRect(canvas.width - 220, 20, 200, 20);
+            ctx.fillStyle = vidaActual > 30 ? '#00ff66' : '#ff0055';
+            ctx.fillRect(canvas.width - 220, 20, (vidaActual / vidaMax) * 200, 20);
+            ctx.strokeStyle = '#fff';
+            ctx.strokeRect(canvas.width - 220, 20, 200, 20);
+            ctx.fillStyle = '#fff';
+            ctx.fillText(`ESCUDO`, canvas.width - 150, 35);
         }
 
-        gameArea.addEventListener('mousedown', () => {
-            if (!gameActive) return;
-            puntos = Math.max(0, puntos - 2);
-            actualizarUI();
-        });
-
-        function subirDificultad() {
-            nivel++;
-            spawnRate = Math.max(350, spawnRate - 120);
-            disappearTime = Math.max(500, disappearTime - 180);
+        function loopJuego() {
+            if (!juegoActivo) return;
+            actualizar();
+            dibujar();
+            requestAnimationFrame(loopJuego);
         }
 
-        function restarVida() {
-            vidas--;
-            actualizarUI();
-            if (vidas <= 0) gameOver();
+        function terminarJuego() {
+            juegoActivo = false;
+            uiTitle.textContent = "MISIÓN INTERRUMPIDA";
+            uiDesc.textContent = `Tu nave colisionó en la dimensión ${nivel}. ¡Puntaje total alcanzado: ${puntaje}!`;
+            startBtn.textContent = "REINTENTAR VIAJE";
+            overlay.style.display = 'flex';
         }
-
-        function actualizarUI() {
-            pointsSpan.textContent = puntos;
-            let livesStr = '';
-            for (let i = 0; i < vidas; i++) livesStr += '🧪';
-            livesContainer.textContent = livesStr;
-        }
-
-        function sacudirNave() {
-            ship.style.transform = 'translateX(-50%) translateY(-15px)';
-            setTimeout(() => ship.style.transform = 'translateX(-50%)', 120);
-        }
-
-        function gameOver() {
-            gameActive = false;
-            gameOverScreen.style.display = 'flex';
-            finalScoreText.textContent = `Puntaje Final: ${puntos} en la Dimensión C-${nivel}`;
-        }
-
-        function reiniciarJuego() {
-            iniciarJuego();
-        }
-
-        iniciarJuego();
     </script>
 </body>
 </html>

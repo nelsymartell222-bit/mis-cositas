@@ -36,11 +36,16 @@
         
         <!-- SIDEBAR -->
         <aside class="sidebar-izq">
-            <div class="perfil-badge">
+            <div class="perfil-badge" id="perfilBadge" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Ver foto de Nelsy M.">
                 <div style="font-size: 2.2rem;">✨</div>
                 <div style="font-size: 1.2rem; margin-top: 5px;">Nelsy M.</div>
                 <div style="font-size: 0.85rem; opacity: 0.9;">Dev & Creator 💻</div>
             </div>
+
+            <dialog class="perfil-foto-dialog" id="perfilFotoDialog" aria-label="Foto de Nelsy M.">
+                <button class="perfil-foto-cerrar" id="cerrarFotoPerfil" type="button" aria-label="Cerrar">×</button>
+                <img src="./foto%20web%20site.jpg" alt="Ilustración de Nelsy M. sentada en un sofá junto a My Melody">
+            </dialog>
 
             <!-- MASCOTA VIRTUAL -->
             <div class="pet-widget">

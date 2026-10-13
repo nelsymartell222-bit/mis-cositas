@@ -82,6 +82,21 @@ function actualizarReloj() {
 setInterval(actualizarReloj, 1000);
 actualizarReloj();
 
+const perfilBadge = document.getElementById('perfilBadge');
+const perfilFotoDialog = document.getElementById('perfilFotoDialog');
+
+perfilBadge.addEventListener('click', () => perfilFotoDialog.showModal());
+perfilBadge.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    perfilFotoDialog.showModal();
+  }
+});
+document.getElementById('cerrarFotoPerfil').addEventListener('click', () => perfilFotoDialog.close());
+perfilFotoDialog.addEventListener('click', (event) => {
+  if (event.target === perfilFotoDialog) perfilFotoDialog.close();
+});
+
 let amorMascota = 100;
 
 function acariciarMascota() {

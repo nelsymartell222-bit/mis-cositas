@@ -1047,3 +1047,227 @@ h2 { color: var(--morado-pastel); font-size: 1.8rem; margin-top: 0; }
     flex-direction: column;
   }
 }
+
+.mascota-container {
+  max-width: 620px;
+  padding: 22px;
+  background: var(--bg-panel);
+  border-color: var(--rosa-pastel);
+  box-shadow: var(--sombra-3d);
+}
+
+.mascota-container::before { display: none; }
+.mascota-contenido { z-index: auto; }
+
+.kiki-room-scene {
+  position: relative;
+  width: 100%;
+  height: clamp(250px, 42vw, 340px);
+  overflow: hidden;
+  isolation: isolate;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse at 52% 76%, rgba(255,255,255,0.38), transparent 42%),
+    linear-gradient(180deg, #f9e5f1 0%, #f3d8ed 73%, #c99fd4 73%, #c99fd4 100%);
+  box-shadow: inset 0 0 0 1px rgba(200, 168, 233, 0.35), 0 8px 22px rgba(107, 82, 126, 0.15);
+}
+
+.kiki-room-scene::before {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  height: 28%;
+  border-top: 5px solid rgba(255,255,255,0.48);
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,0.13) 0 2px, transparent 2px 52px), linear-gradient(180deg, #d8b2df, #c99fd4);
+  content: '';
+}
+
+.room-window {
+  position: absolute;
+  top: 11%;
+  left: 9%;
+  width: 24%;
+  height: 39%;
+  overflow: hidden;
+  border: 7px solid #fff8ff;
+  border-radius: 38px 38px 14px 14px;
+  background: linear-gradient(180deg, #a6dbf4, #e3c9f5 72%, #ffe1f1);
+  box-shadow: 0 4px 10px rgba(107,82,126,0.2), inset 0 0 0 2px rgba(200,168,233,0.48);
+}
+
+.room-window::before, .room-window::after {
+  position: absolute;
+  background: rgba(255,255,255,0.85);
+  content: '';
+}
+.room-window::before { top: 0; bottom: 0; left: 50%; width: 4px; transform: translateX(-50%); }
+.room-window::after { top: 54%; right: 0; left: 0; height: 4px; }
+.room-window span { position: absolute; top: 8%; right: 12%; color: #fff4b4; font-size: clamp(1rem, 3vw, 1.8rem); text-shadow: 0 0 12px white; }
+.room-window i { position: absolute; right: 10%; bottom: 10%; left: 10%; height: 18%; border-radius: 50% 50% 0 0; background: rgba(142,193,154,0.65); }
+
+.room-wall-art {
+  position: absolute;
+  top: 13%;
+  right: 29%;
+  display: grid;
+  width: 46px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 5px solid white;
+  border-radius: 50%;
+  color: var(--rosa-brillante);
+  background: #fff1f8;
+  box-shadow: 0 3px 8px rgba(107,82,126,0.16);
+  font-size: 1.35rem;
+}
+
+.room-bed {
+  position: absolute;
+  bottom: 22%;
+  left: 12%;
+  width: 39%;
+  height: 27%;
+  border: 5px solid #fff9ff;
+  border-bottom-width: 9px;
+  border-radius: 20px 25px 12px 12px;
+  background: #e59ac3;
+  box-shadow: 0 8px 0 rgba(123,77,131,0.22), 0 10px 18px rgba(83,56,99,0.12);
+  transition: background 180ms ease;
+}
+.room-bed::before { position: absolute; top: -11px; left: 7%; width: 22%; height: 38%; border: 3px solid white; border-radius: 12px; background: #fff4fc; content: ''; }
+.room-bed::after { position: absolute; right: 6%; bottom: -10px; left: 6%; height: 9px; border-radius: 0 0 8px 8px; background: rgba(108,66,124,0.34); content: ''; }
+.room-pillow { position: absolute; top: 4px; left: 35%; width: 25%; height: 28%; border-radius: 50%; background: #fff4fc; }
+.room-blanket { position: absolute; top: 32%; right: 4%; bottom: 8%; left: 28%; border-radius: 14px 18px 8px 8px; background: rgba(255,255,255,0.25); }
+.kiki-room-scene[data-bed="menta"] .room-bed { background: #87c9ae; }
+.kiki-room-scene[data-bed="lila"] .room-bed { background: #ad91d2; }
+
+.room-rug {
+  position: absolute;
+  bottom: 8%;
+  left: 39%;
+  width: 43%;
+  height: 15%;
+  border: 4px solid rgba(255,255,255,0.75);
+  border-radius: 50%;
+  background: #c9a6e2;
+  box-shadow: 0 3px 0 rgba(126,82,142,0.18);
+}
+.kiki-room-scene[data-rug="rosa"] .room-rug { background: #f5a9cc; }
+.kiki-room-scene[data-rug="menta"] .room-rug { background: #9bd9bc; }
+
+.room-lamp { position: absolute; right: 13%; bottom: 24%; display: grid; width: 54px; height: 82px; justify-items: center; align-content: end; }
+.room-lamp i { width: 43px; height: 33px; border: 3px solid white; border-radius: 22px 22px 8px 8px; background: #ffd875; box-shadow: 0 0 18px rgba(255,216,117,0.58); }
+.room-lamp span { width: 6px; height: 27px; background: #fff7e2; }
+.room-lamp::after { width: 34px; height: 7px; border-radius: 50%; background: #fff7e2; content: ''; }
+.kiki-room-scene[data-lamp="luna"] .room-lamp i { border-radius: 50% 50% 38% 38%; background: #b5e5ff; box-shadow: 0 0 18px rgba(181,229,255,0.65); }
+.kiki-room-scene[data-lamp="estrella"] .room-lamp i { clip-path: polygon(50% 0, 62% 34%, 100% 36%, 70% 59%, 80% 100%, 50% 76%, 20% 100%, 30% 59%, 0 36%, 38% 34%); border: 0; background: #ffe270; }
+
+.room-plant { position: absolute; right: 4%; bottom: 23%; width: 46px; height: 75px; }
+.room-plant span { position: absolute; right: 5px; bottom: 0; left: 5px; height: 23px; border: 3px solid white; border-radius: 3px 3px 13px 13px; background: #e8a8cb; }
+.room-plant i { position: absolute; bottom: 20px; left: 19px; width: 12px; height: 34px; border-radius: 100% 0 100% 0; background: #74b97a; transform: rotate(-28deg); transform-origin: bottom; }
+.room-plant i:nth-child(2) { transform: rotate(27deg) scale(0.9); }
+.room-plant i:nth-child(3) { bottom: 25px; left: 7px; transform: rotate(-54deg) scale(0.72); }
+.kiki-room-scene[data-plant="suculenta"] .room-plant i { height: 22px; border-radius: 80% 80% 25% 25%; background: #7ebc9e; }
+.kiki-room-scene[data-plant="flor"] .room-plant i { background: #e885b6; }
+
+.mascota-avatar {
+  position: absolute;
+  z-index: 2;
+  bottom: 16%;
+  left: 53%;
+  width: 78px;
+  min-height: 74px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  font-family: inherit;
+  font-size: clamp(3.4rem, 8vw, 5.4rem);
+  line-height: 1;
+  transform: translateX(-50%);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.mascota-avatar:hover { transform: translateX(-50%) scale(1.08); }
+.mascota-avatar:active { transform: translateX(-50%) scale(0.96); }
+.mascota-avatar.brincando { animation: brinco 0.5s ease-in-out 2; }
+.room-state { position: absolute; right: 12px; bottom: 10px; z-index: 2; padding: 5px 9px; border: 1px solid rgba(255,255,255,0.7); border-radius: 999px; color: #6b527e; background: rgba(255,255,255,0.78); font-size: 0.7rem; font-weight: bold; }
+.kiki-room-scene[data-mood="dormida"] .mascota-avatar { filter: saturate(0.65); }
+
+.room-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 4px 20px 18px; }
+.room-actions .btn-muro { min-height: 44px; }
+.reset-room-btn { color: var(--texto); background: var(--card-bg); border-color: var(--rosa-pastel); box-shadow: 0 3px 0 var(--rosa-pastel); }
+
+.room-decor-controls {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 16px;
+  border: 2px dashed var(--rosa-pastel);
+  border-radius: 18px;
+  text-align: left;
+  background: rgba(255,255,255,0.28);
+}
+.room-decor-controls h3 { grid-column: 1 / -1; margin: 0; color: var(--texto); font-size: 0.95rem; }
+.room-decor-controls label { display: grid; gap: 6px; color: var(--texto); font-size: 0.75rem; font-weight: bold; }
+.room-decor-controls select { width: 100%; min-width: 0; min-height: 40px; padding: 7px 8px; border: 2px solid var(--morado-pastel); border-radius: 11px; color: var(--texto); background: var(--bg-panel); font: inherit; font-size: 0.76rem; }
+.room-unlock-message { grid-column: 1 / -1; margin: 0; color: var(--texto); font-size: 0.75rem; opacity: 0.82; }
+.room-reset-dialog { width: min(420px, calc(100% - 28px)); border: 3px solid var(--rosa-pastel); border-radius: 22px; color: var(--texto); background: var(--bg-panel); box-shadow: var(--sombra-3d); }
+.room-reset-dialog::backdrop { background: rgba(35,22,45,0.62); }
+.room-reset-dialog h3 { margin-top: 4px; color: var(--morado-pastel); }
+.room-reset-dialog p { line-height: 1.5; }
+.room-reset-dialog > div { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 9px; }
+.room-reset-dialog button { min-height: 44px; }
+
+.games-intro { margin-top: -8px; }
+.minigames-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+.minigame-card { display: flex; min-width: 0; flex-direction: column; padding: 16px; border: 3px solid var(--morado-pastel); border-radius: 20px; background: var(--card-bg); box-shadow: 0 5px 0 rgba(200,168,233,0.5); transition: transform 180ms ease, box-shadow 180ms ease; }
+.minigame-card:hover { transform: translateY(-3px); box-shadow: 0 8px 0 rgba(200,168,233,0.45); }
+.minigame-card h3 { margin: 14px 0 6px; color: var(--texto); font-size: 1.08rem; }
+.minigame-card p { min-height: 3em; margin: 0 0 12px; font-size: 0.85rem; line-height: 1.5; }
+.game-preview { position: relative; display: grid; height: 130px; place-items: center; overflow: hidden; border: 2px solid rgba(200,168,233,0.55); border-radius: 15px; background: linear-gradient(145deg, #fff0f8, #e8dcff); }
+.heart-preview span { z-index: 1; color: var(--rosa-brillante); font-size: 3.6rem; filter: drop-shadow(0 5px 7px rgba(255,133,162,0.35)); animation: latido 1s ease-in-out infinite alternate; }
+.heart-preview i, .heart-preview b { position: absolute; color: #bd93f9; font-size: 1.4rem; font-style: normal; }
+.heart-preview i { top: 20px; left: 24%; }
+.heart-preview b { right: 22%; bottom: 20px; color: #ffbf4b; }
+.portal-preview { background: radial-gradient(circle at center, rgba(80,246,181,0.22), transparent 38%), linear-gradient(145deg, #0c201e, #11263b); }
+.portal-preview span { z-index: 1; font-size: 3rem; filter: drop-shadow(0 0 12px rgba(80,216,255,0.6)); }
+.portal-preview i { position: absolute; width: 86px; height: 104px; border: 2px solid #6deac0; border-radius: 50%; box-shadow: 0 0 20px rgba(80,246,181,0.6), inset 0 0 20px rgba(80,216,255,0.25); animation: portalPreview 3s ease-in-out infinite alternate; }
+@keyframes portalPreview { to { transform: scale(1.1) rotate(12deg); box-shadow: 0 0 28px rgba(80,246,181,0.8), inset 0 0 25px rgba(80,216,255,0.35); } }
+.game-card-record { display: flex; justify-content: space-between; margin: auto 0 12px; color: var(--texto); font-size: 0.8rem; }
+.game-card-record strong { color: var(--rosa-brillante); }
+.game-open-btn { min-height: 46px; width: 100%; }
+.game-player[hidden], .catch-game-stage[hidden], .portal-game-stage[hidden], .games-catalog[hidden] { display: none !important; }
+.game-player-heading { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.game-player-heading h2 { flex: 1; margin: 0; }
+.game-instructions { margin: 0 0 12px; font-size: 0.88rem; }
+.catch-scoreboard { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.catch-scoreboard span { padding: 8px 12px; border: 2px solid var(--rosa-pastel); border-radius: 14px; color: var(--texto); background: var(--card-bg); font-size: 0.84rem; }
+.catch-scoreboard strong { color: var(--rosa-brillante); }
+.catch-controls { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 13px; }
+.catch-controls .btn-muro { min-height: 44px; }
+.catch-controls button:disabled { opacity: 0.5; cursor: default; }
+.game-status { min-height: 1.5em; margin: 10px 0 0; font-size: 0.82rem; }
+.corazon-activo { padding: 0; border: 0; background: transparent; line-height: 1; touch-action: manipulation; }
+.portal-game-stage iframe { display: block; width: 100%; height: 900px; border: 0; border-radius: 16px; background: #071310; }
+
+body.dark-mode .room-decor-controls { border-color: var(--morado-pastel); background: rgba(31,22,48,0.65); }
+body.dark-mode .room-state { color: #392944; }
+body.dark-mode .room-reset-dialog { color: var(--texto); }
+body.dark-mode .minigame-card { background: rgba(31,22,48,0.96); }
+body.dark-mode .game-card-record { color: var(--texto); }
+
+@media (max-width: 700px) {
+  .minigames-grid { grid-template-columns: minmax(0, 1fr); }
+  .minigame-card p { min-height: 0; }
+  .portal-game-stage iframe { height: 1120px; }
+  .room-decor-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mascota-avatar, .pet-avatar, .heart-preview span, .portal-preview i, .mascota-container::before { animation: none !important; transition: none !important; }
+  .minigame-card:hover { transform: none; }
+}

@@ -1,14 +1,54 @@
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let audioCtx = null;
+
+function storageGet(key) {
+  try { return window.localStorage.getItem(key); } catch { return null; }
+}
+
+function storageSet(key, value) {
+  try { window.localStorage.setItem(key, value); return true; } catch { return false; }
+}
+
+function storageRemove(key) {
+  try { window.localStorage.removeItem(key); return true; } catch { return false; }
+}
+
+function storageJSON(key, fallback) {
+  try {
+    const value = storageGet(key);
+    return value === null ? fallback : JSON.parse(value);
+  } catch {
+    return fallback;
+  }
+}
+
+function storageNumber(key, fallback, min = 0, max = Number.MAX_SAFE_INTEGER) {
+  const stored = storageGet(key);
+  const value = Number(stored);
+  return Number.isFinite(value) && stored !== null
+    ? Math.max(min, Math.min(max, value))
+    : fallback;
+}
+
+function getAudioContext() {
+  if (!audioCtx) {
+    const AudioContextCtor = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextCtor) return null;
+    try { audioCtx = new AudioContextCtor(); } catch { return null; }
+  }
+  return audioCtx;
+}
 
 function playSound(tipo) {
-  if (audioCtx.state === 'suspended') audioCtx.resume();
+  const context = getAudioContext();
+  if (!context) return;
+  if (context.state === 'suspended') context.resume().catch(() => {});
 
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
+  const osc = context.createOscillator();
+  const gain = context.createGain();
   osc.connect(gain);
   gain.connect(audioCtx.destination);
 
-  const now = audioCtx.currentTime;
+  const now = context.currentTime;
 
   if (tipo === 'pop') {
     osc.type = 'sine';
@@ -54,7 +94,13 @@ function toggleDarkMode() {
   document.body.classList.toggle('dark-mode');
   const esDark = document.body.classList.contains('dark-mode');
   document.getElementById('btnTheme').innerText = esDark ? "☀️ Modo Día" : "🌙 Modo Noche";
+  storageSet('nelsy_theme', esDark ? 'dark' : 'light');
   playSound('chime');
+}
+
+if (storageGet('nelsy_theme') === 'dark') {
+  document.body.classList.add('dark-mode');
+  document.getElementById('btnTheme').innerText = '☀️ Modo Día';
 }
 
 function actualizarReloj() {
@@ -97,18 +143,6 @@ perfilFotoDialog.addEventListener('click', (event) => {
   if (event.target === perfilFotoDialog) perfilFotoDialog.close();
 });
 
-let amorMascota = 100;
-
-function acariciarMascota() {
-  amorMascota = Math.min(amorMascota + 5, 100);
-  document.getElementById('petLove').innerText = amorMascota;
-  document.getElementById('petEmoji').innerText = "😸";
-  playSound('meow');
-  setTimeout(() => {
-    document.getElementById('petEmoji').innerText = "🐱";
-  }, 800);
-}
-
 function cambiarMood(estado, mensaje) {
   playSound('pop');
   document.getElementById('mensajeMood').innerText = mensaje;
@@ -145,7 +179,8 @@ function revelarSuerte() {
 }
 
 function cargarTareas() {
-  const tareas = JSON.parse(localStorage.getItem('tareasNelsyPro')) || [
+  const guardadas = storageJSON('tareasNelsyPro', null);
+  const tareas = Array.isArray(guardadas) ? guardadas.filter((tarea) => tarea && typeof tarea.texto === 'string') : [
     { texto: "Probar los soniditos interactivos 🔊", done: true },
     { texto: "Subir cambios a GitHub 🚀", done: false }
   ];
@@ -168,26 +203,29 @@ function agregarTarea() {
   if (!val) return;
 
   playSound('chime');
-  const tareas = JSON.parse(localStorage.getItem('tareasNelsyPro')) || [];
+  const tareasGuardadas = storageJSON('tareasNelsyPro', []);
+  const tareas = Array.isArray(tareasGuardadas) ? tareasGuardadas : [];
   tareas.push({ texto: val, done: false });
-  localStorage.setItem('tareasNelsyPro', JSON.stringify(tareas));
+  storageSet('tareasNelsyPro', JSON.stringify(tareas));
   input.value = "";
   cargarTareas();
 }
 
 function toggleTarea(index) {
   playSound('pop');
-  const tareas = JSON.parse(localStorage.getItem('tareasNelsyPro')) || [];
+  const tareas = storageJSON('tareasNelsyPro', []);
+  if (!Array.isArray(tareas) || !tareas[index]) return;
   tareas[index].done = !tareas[index].done;
-  localStorage.setItem('tareasNelsyPro', JSON.stringify(tareas));
+  storageSet('tareasNelsyPro', JSON.stringify(tareas));
   cargarTareas();
 }
 
 function eliminarTarea(index) {
   playSound('pop');
-  const tareas = JSON.parse(localStorage.getItem('tareasNelsyPro')) || [];
+  const tareas = storageJSON('tareasNelsyPro', []);
+  if (!Array.isArray(tareas) || !tareas[index]) return;
   tareas.splice(index, 1);
-  localStorage.setItem('tareasNelsyPro', JSON.stringify(tareas));
+  storageSet('tareasNelsyPro', JSON.stringify(tareas));
   cargarTareas();
 }
 
@@ -218,6 +256,7 @@ for (let i = 0; i < 35; i++) {
 }
 
 function irACapa(idCapa, btn) {
+  if (idCapa !== 'juego' && catchState === 'running') pausarJuego(true);
   playSound('pop');
   document.querySelectorAll('.capa').forEach(c => c.classList.remove('activa'));
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('activo'));
@@ -296,13 +335,24 @@ function completado() {
 }
 
 function cargarMensajes() {
-  let mensajes = JSON.parse(localStorage.getItem('muroNelsyPro')) || [];
-  let caja = document.getElementById('cajaMensajes');
-  caja.innerHTML = mensajes.length === 0 ? "<div style='opacity: 0.7;'>¡Sé la primera persona en dejar un mensaje! 🥺</div>" : "";
-  mensajes.forEach(m => {
-    let div = document.createElement('div');
+  const storedMessages = storageJSON('muroNelsyPro', []);
+  const mensajes = Array.isArray(storedMessages)
+    ? storedMessages.filter((message) => message && typeof message.autor === 'string' && typeof message.texto === 'string')
+    : [];
+  const caja = document.getElementById('cajaMensajes');
+  caja.replaceChildren();
+  if (mensajes.length === 0) {
+    const emptyMessage = document.createElement('div');
+    emptyMessage.style.opacity = '0.7';
+    emptyMessage.textContent = '¡Sé la primera persona en dejar un mensaje! 🥺';
+    caja.appendChild(emptyMessage);
+  }
+  mensajes.forEach((mensaje) => {
+    const div = document.createElement('div');
+    const autor = document.createElement('strong');
     div.className = 'msj-item';
-    div.innerHTML = `<strong>🌸 ${m.autor}:</strong> ${m.texto}`;
+    autor.textContent = `🌸 ${mensaje.autor}: `;
+    div.append(autor, document.createTextNode(mensaje.texto));
     caja.appendChild(div);
   });
 }
@@ -313,57 +363,195 @@ function guardarMensaje() {
   if (!autor || !texto) return;
 
   playSound('chime');
-  let mensajes = JSON.parse(localStorage.getItem('muroNelsyPro')) || [];
+  const storedMessages = storageJSON('muroNelsyPro', []);
+  const mensajes = Array.isArray(storedMessages) ? storedMessages : [];
   mensajes.unshift({ autor, texto });
-  localStorage.setItem('muroNelsyPro', JSON.stringify(mensajes));
+  storageSet('muroNelsyPro', JSON.stringify(mensajes));
   document.getElementById('nombreAmigo').value = "";
   document.getElementById('textoMensaje').value = "";
   cargarMensajes();
 }
 
-window.onload = function () {
+window.addEventListener('DOMContentLoaded', () => {
   cargarMensajes();
   cargarTareas();
-};
+}, { once: true });
 
-let puntos = 0, timerJuego = null;
+const minigameRegistry = {
+  catch: { title: 'Atrapa la Magia', stageId: 'catchGameStage' },
+  portal: { title: 'Portal de Pigmentos', stageId: 'portalGameStage' }
+};
+let activeMinigame = null;
+let portalFrameLoaded = false;
+let puntos = 0;
+let timerJuego = null;
+let countdownJuego = null;
+let catchState = 'idle';
+let catchTimeLeft = 30;
+let catchBest = storageNumber('nelsy_catch_best', 0);
+
+function actualizarRecordsJuegos() {
+  document.getElementById('catchBest').textContent = catchBest;
+  document.getElementById('catchBestCard').textContent = catchBest;
+  document.getElementById('portalBestCard').textContent = storageNumber('portal_lab_best', 0);
+}
+
+function actualizarControlesJuego() {
+  document.getElementById('startCatchBtn').disabled = catchState === 'running';
+  document.getElementById('pauseCatchBtn').disabled = catchState !== 'running';
+  document.getElementById('resumeCatchBtn').disabled = catchState !== 'paused';
+}
+
+function limpiarTimersJuego() {
+  clearInterval(timerJuego);
+  clearInterval(countdownJuego);
+  timerJuego = null;
+  countdownJuego = null;
+}
+
+function entrarMinijuego(id) {
+  const juego = minigameRegistry[id];
+  if (!juego) return;
+  if (catchState === 'running') pausarJuego(true);
+  activeMinigame = id;
+  document.getElementById('gamesCatalog').hidden = true;
+  document.getElementById('gamePlayer').hidden = false;
+  document.getElementById('activeGameTitle').textContent = juego.title;
+  Object.entries(minigameRegistry).forEach(([gameId, entry]) => {
+    document.getElementById(entry.stageId).hidden = gameId !== id;
+  });
+  if (id === 'portal' && !portalFrameLoaded) {
+    document.getElementById('portalGameFrame').src = './game.html?embed=1';
+    portalFrameLoaded = true;
+  }
+  actualizarRecordsJuegos();
+}
+
+function volverColeccionJuegos() {
+  if (catchState === 'running') pausarJuego(true);
+  activeMinigame = null;
+  document.getElementById('gamePlayer').hidden = true;
+  document.getElementById('gamesCatalog').hidden = false;
+  actualizarRecordsJuegos();
+}
+
+document.querySelectorAll('[data-open-game]').forEach((button) => {
+  button.addEventListener('click', () => entrarMinijuego(button.dataset.openGame));
+});
+document.getElementById('backToGames').addEventListener('click', volverColeccionJuegos);
 
 function iniciarJuego() {
+  limpiarTimersJuego();
   puntos = 0;
-  document.getElementById('puntajeJuego').innerText = puntos;
+  catchTimeLeft = 30;
+  catchState = 'running';
+  document.getElementById('puntajeJuego').textContent = puntos;
+  document.getElementById('catchTime').textContent = catchTimeLeft;
+  document.getElementById('catchStatus').textContent = '¡A atrapar! 💖';
   playSound('chime');
-  clearInterval(timerJuego);
+  actualizarControlesJuego();
   siguienteCorazon();
   timerJuego = setInterval(siguienteCorazon, 900);
+  countdownJuego = setInterval(() => {
+    catchTimeLeft -= 1;
+    document.getElementById('catchTime').textContent = catchTimeLeft;
+    if (catchTimeLeft <= 0) terminarJuegoCatch();
+  }, 1000);
 }
+
+function terminarJuegoCatch() {
+  limpiarTimersJuego();
+  catchState = 'finished';
+  document.getElementById('spawnCorazon').replaceChildren();
+  document.getElementById('catchStatus').textContent = `¡Ronda terminada! Juntaste ${puntos} ${puntos === 1 ? 'figura' : 'figuras'} ✨`;
+  actualizarControlesJuego();
+}
+
+function pausarJuego(silencioso = false) {
+  if (catchState !== 'running') return;
+  limpiarTimersJuego();
+  catchState = 'paused';
+  document.getElementById('catchStatus').textContent = silencioso ? 'Partida en pausa al salir de la sección.' : 'Pausa. Kiki guarda tu lugar 🐱';
+  actualizarControlesJuego();
+}
+
+function reanudarJuego() {
+  if (catchState !== 'paused') return;
+  if (catchTimeLeft <= 0) return terminarJuegoCatch();
+  catchState = 'running';
+  document.getElementById('catchStatus').textContent = '¡Seguimos! 💖';
+  actualizarControlesJuego();
+  siguienteCorazon();
+  timerJuego = setInterval(siguienteCorazon, 900);
+  countdownJuego = setInterval(() => {
+    catchTimeLeft -= 1;
+    document.getElementById('catchTime').textContent = catchTimeLeft;
+    if (catchTimeLeft <= 0) terminarJuegoCatch();
+  }, 1000);
+}
+
+document.getElementById('startCatchBtn').addEventListener('click', iniciarJuego);
+document.getElementById('pauseCatchBtn').addEventListener('click', () => pausarJuego());
+document.getElementById('resumeCatchBtn').addEventListener('click', reanudarJuego);
+document.getElementById('restartCatchBtn').addEventListener('click', iniciarJuego);
 
 function siguienteCorazon() {
-  let zona = document.getElementById('zonaJuego');
-  let contenedor = document.getElementById('spawnCorazon');
-  contenedor.innerHTML = "";
-  let corazon = document.createElement('div');
-  corazon.className = 'corazon-activo';
-  corazon.innerHTML = ["💖", "⭐", "🎀", "🌙", "🐱"][Math.floor(Math.random() * 5)];
-  corazon.style.left = (Math.random() * (zona.clientWidth - 50)) + 'px';
-  corazon.style.top = (Math.random() * (zona.clientHeight - 50)) + 'px';
-  corazon.onclick = function (e) {
-    e.stopPropagation();
-    puntos++;
+  if (catchState !== 'running' || activeMinigame !== 'catch') return;
+  const zona = document.getElementById('zonaJuego');
+  const contenedor = document.getElementById('spawnCorazon');
+  contenedor.replaceChildren();
+  const figura = document.createElement('button');
+  figura.type = 'button';
+  figura.className = 'corazon-activo';
+  figura.setAttribute('aria-label', 'Atrapar figura');
+  figura.textContent = ['💖', '⭐', '🎀', '🌙', '🐱'][Math.floor(Math.random() * 5)];
+  figura.style.left = `${Math.random() * Math.max(0, zona.clientWidth - 50)}px`;
+  figura.style.top = `${Math.random() * Math.max(0, zona.clientHeight - 50)}px`;
+  figura.addEventListener('click', (event) => {
+    event.stopPropagation();
+    if (catchState !== 'running') return;
+    puntos += 1;
+    if (puntos > catchBest) {
+      catchBest = puntos;
+      storageSet('nelsy_catch_best', String(catchBest));
+      actualizarRecordsJuegos();
+      actualizarDesbloqueosDecoracion();
+    }
     playSound('win');
-    document.getElementById('puntajeJuego').innerText = puntos;
+    document.getElementById('puntajeJuego').textContent = puntos;
     siguienteCorazon();
-  };
-  contenedor.appendChild(corazon);
+  });
+  contenedor.appendChild(figura);
 }
 
-let hambre = parseInt(localStorage.getItem('mascota_hambre')) || 80;
-let felicidad = parseInt(localStorage.getItem('mascota_felicidad')) || 100;
+actualizarRecordsJuegos();
+
+const ROOM_STORAGE_KEY = 'nelsy_kiki_room_v1';
+const roomData = storageJSON(ROOM_STORAGE_KEY, {});
+const storedRoom = roomData && typeof roomData === 'object' && !Array.isArray(roomData) ? roomData : {};
+const roomDefaults = { bed: 'rosa', rug: 'lila', lamp: 'corazon', plant: 'monstera' };
+const roomOptions = {
+  bed: ['rosa', 'menta', 'lila'],
+  rug: ['lila', 'rosa', 'menta'],
+  lamp: ['corazon', 'luna', 'estrella'],
+  plant: ['monstera', 'suculenta', 'flor']
+};
+let hambre = Number.isFinite(storedRoom.hunger) ? Math.max(0, Math.min(100, storedRoom.hunger)) : storageNumber('mascota_hambre', 80, 0, 100);
+let felicidad = Number.isFinite(storedRoom.happiness) ? Math.max(0, Math.min(100, storedRoom.happiness)) : storageNumber('mascota_felicidad', 100, 0, 100);
+let kikiDormida = storedRoom.sleeping === true;
+let roomDecor = { ...roomDefaults };
+Object.keys(roomOptions).forEach((key) => {
+  if (roomOptions[key].includes(storedRoom.decor?.[key])) roomDecor[key] = storedRoom.decor[key];
+});
+let unlockedDecor = Array.isArray(storedRoom.unlockedDecor) ? storedRoom.unlockedDecor.filter((item) => ['estrella', 'flor'].includes(item)) : [];
 
 const barHambre = document.getElementById('bar-hambre');
 const barFelicidad = document.getElementById('bar-felicidad');
 const dialogo = document.getElementById('mascota-dialogo');
 const avatar = document.getElementById('mascota-avatar');
 const mascotaContenedor = document.querySelector('.mascota-container');
+const roomScene = document.getElementById('kikiRoomScene');
+const petWidget = document.getElementById('petWidget');
 
 const frasesComida = [
   "¡Mmm, qué rico! 😋",
@@ -398,24 +586,98 @@ function actualizarEstado() {
   if (petLove) petLove.textContent = felicidad;
   if (petHambre) petHambre.textContent = hambre;
 
-  localStorage.setItem('mascota_hambre', hambre);
-  localStorage.setItem('mascota_felicidad', felicidad);
+  storageSet('mascota_hambre', String(hambre));
+  storageSet('mascota_felicidad', String(felicidad));
+  storageSet(ROOM_STORAGE_KEY, JSON.stringify({ version: 1, hunger: hambre, happiness: felicidad, sleeping: kikiDormida, decor: roomDecor, unlockedDecor }));
 
-  let caraAutomatica = '🐱';
-
-  if (hambre < 30 || felicidad < 30) {
-    caraAutomatica = "😿";
-  } else if (felicidad > 85) {
-    caraAutomatica = "😸";
-  } else if (hambre > 90) {
-    caraAutomatica = "😻";
-  } else {
-    caraAutomatica = "🐱";
-  }
+  const mood = kikiDormida ? 'dormida' : (hambre < 30 || felicidad < 30 ? 'cansada' : (felicidad > 85 ? 'feliz' : 'despierta'));
+  const caraAutomatica = kikiDormida ? '😴' : (mood === 'cansada' ? '😿' : (mood === 'feliz' ? '😸' : '🐱'));
 
   avatar.textContent = caraAutomatica;
   if (petEmoji) petEmoji.textContent = caraAutomatica;
+  roomScene.dataset.mood = mood;
+  document.getElementById('kikiRoomState').textContent = kikiDormida ? 'Durmiendo' : (mood === 'cansada' ? 'Un poquito cansada' : (mood === 'feliz' ? 'Feliz' : 'Despierta'));
+  document.getElementById('sleepKikiBtn').textContent = kikiDormida ? '☀️ Despertar' : '🌙 A dormir';
 }
+
+function aplicarDecoracion() {
+  Object.entries(roomDecor).forEach(([slot, option]) => {
+    roomScene.dataset[slot] = option;
+    document.getElementById(`${slot}Decor`).value = option;
+  });
+}
+
+function guardarHabitacion() {
+  storageSet(ROOM_STORAGE_KEY, JSON.stringify({ version: 1, hunger: hambre, happiness: felicidad, sleeping: kikiDormida, decor: roomDecor, unlockedDecor }));
+}
+
+function actualizarDesbloqueosDecoracion() {
+  const desbloqueados = new Set(unlockedDecor);
+  if (catchBest >= 10) desbloqueados.add('estrella');
+  if (catchBest >= 5) desbloqueados.add('flor');
+  unlockedDecor = [...desbloqueados];
+  const flowerOption = document.querySelector('#plantDecor option[value="flor"]');
+  const starOption = document.querySelector('#lampDecor option[value="estrella"]');
+  flowerOption.disabled = !desbloqueados.has('flor');
+  starOption.disabled = !desbloqueados.has('estrella');
+  flowerOption.textContent = desbloqueados.has('flor') ? 'Flor' : 'Flor (5 corazones)';
+  starOption.textContent = desbloqueados.has('estrella') ? 'Estrella' : 'Estrella (10 corazones)';
+  const message = document.getElementById('roomUnlockMessage');
+  message.textContent = unlockedDecor.length
+    ? '¡Kiki desbloqueó una decoración nueva! Revisa las opciones 🌟'
+    : 'Atrapa corazones en los minijuegos para desbloquear detalles especiales.';
+  guardarHabitacion();
+}
+
+function toggleDormirKiki() {
+  kikiDormida = !kikiDormida;
+  actualizarEstado();
+  dialogo.textContent = kikiDormida ? 'Shhh... Kiki está soñando con estrellitas 🌙' : '¡Buenos días, Kiki! ¿Jugamos? ☀️';
+  if (!kikiDormida) playSound('chime');
+}
+
+function restablecerHabitacion() {
+  hambre = 80;
+  felicidad = 100;
+  kikiDormida = false;
+  roomDecor = { ...roomDefaults };
+  aplicarDecoracion();
+  storageRemove(ROOM_STORAGE_KEY);
+  storageRemove('mascota_hambre');
+  storageRemove('mascota_felicidad');
+  dialogo.textContent = '¡Qué lindo quedó mi rinconcito! Gracias 💖';
+  actualizarEstado();
+  roomResetDialog.close();
+}
+
+Object.keys(roomOptions).forEach((slot) => {
+  document.getElementById(`${slot}Decor`).addEventListener('change', (event) => {
+    if (!roomOptions[slot].includes(event.target.value)) return;
+    roomDecor[slot] = event.target.value;
+    aplicarDecoracion();
+    guardarHabitacion();
+  });
+});
+
+const roomResetDialog = document.getElementById('roomResetDialog');
+document.getElementById('openRoomReset').addEventListener('click', () => roomResetDialog.showModal());
+document.getElementById('cancelRoomReset').addEventListener('click', () => roomResetDialog.close());
+document.getElementById('confirmRoomReset').addEventListener('click', restablecerHabitacion);
+document.getElementById('mascota-avatar').addEventListener('click', acariciarMascota);
+petWidget.addEventListener('click', acariciarMascota);
+petWidget.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    acariciarMascota();
+  }
+});
+
+document.getElementById('roomResetDialog').addEventListener('click', (event) => {
+  if (event.target === roomResetDialog) roomResetDialog.close();
+});
+
+aplicarDecoracion();
+actualizarDesbloqueosDecoracion();
 
 function crearParticulas(tipo) {
   const rect = avatar.getBoundingClientRect();
@@ -456,7 +718,9 @@ style.textContent = `
 document.head.appendChild(style);
 
 function alimentarMascota(tipoComida, puntos) {
+  kikiDormida = false;
   if (hambre >= 100) {
+    actualizarEstado();
     dialogo.textContent = "¡Estoy súper llena! 🙈";
     if (mascotaContenedor) {
       mascotaContenedor.style.animation = 'shake 0.4s';
@@ -475,10 +739,12 @@ function alimentarMascota(tipoComida, puntos) {
 }
 
 function acariciarMascota() {
+  if (kikiDormida) kikiDormida = false;
   felicidad = Math.min(100, felicidad + 15);
   actualizarEstado();
   animarBrinco();
   crearParticulas('amor');
+  playSound('meow');
 
   const frase = frasesCaricias[Math.floor(Math.random() * frasesCaricias.length)];
   dialogo.textContent = frase;
@@ -500,23 +766,5 @@ shakeStyle.textContent = `
   }
 `;
 document.head.appendChild(shakeStyle);
-
-setInterval(() => {
-  hambre = Math.max(0, hambre - 5);
-  felicidad = Math.max(0, felicidad - 5);
-  actualizarEstado();
-
-  const mensajes = [
-    "Tengo hambre... ¿me das un bocadillito? 🥺",
-    "¿Dónde estabas? ¡Me extrañabas! 🥺",
-    "Tengo un poco de hambre 😿",
-    "¿Me acaricicias? 🥺",
-    "¡Estoy un poquito solita! 💔"
-  ];
-
-  if (hambre < 35) {
-    dialogo.textContent = mensajes[Math.floor(Math.random() * mensajes.length)];
-  }
-}, 25000);
 
 actualizarEstado();

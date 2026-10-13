@@ -48,8 +48,8 @@
             </dialog>
 
             <!-- MASCOTA VIRTUAL -->
-            <div class="pet-widget">
-                <div class="pet-avatar" id="petEmoji" style="cursor: pointer;" onmouseover="acariciarMascota()" title="Acaricia a Kiki 💕">🐱</div>
+            <div class="pet-widget" id="petWidget" role="button" tabindex="0" aria-label="Interactuar con Kiki">
+                <div class="pet-avatar" id="petEmoji" style="cursor: pointer;" title="Toca para acariciar a Kiki 💕">🐱</div>
                 <div style="font-size: 0.85rem; font-weight: bold; margin-top: 4px;">Kiki el Gatito</div>
                 <div style="font-size: 0.7rem; opacity: 0.85; margin-top: 5px; line-height: 1.4;">
                     <div>🍗 Hambre: <span id="petHambre">80</span>%</div>
@@ -63,7 +63,7 @@
             <button class="menu-btn" onclick="irACapa('calculadora', this)">🧮 Calculadora</button>
             <button class="menu-btn" onclick="irACapa('muro', this)">💌 Muro Público</button>
             <button class="menu-btn" onclick="irACapa('dibujos', this)">🎨 Mis Dibujos</button>
-            <a class="menu-btn" href="./game.html" style="display: inline-flex; align-items: center; justify-content: center; text-decoration: none; text-align: center;">🎮 Minijuego</a>
+            <button class="menu-btn" onclick="irACapa('juego', this)">🎮 Minijuegos</button>
         </aside>
 
         <!-- CONTENIDO -->
@@ -124,7 +124,18 @@
                                 <div id="mascota-dialogo" class="dialogo-bubble">¡Hola amiga! ¿Viniste a visitarme? 🥰</div>
 
                                 <!-- Avatar de la Mascota -->
-                                <div id="mascota-avatar" class="mascota-avatar" onmouseover="acariciarMascota()" style="cursor: pointer;" title="Acaricia a Kiki 💕">🐱</div>
+                                <div class="kiki-room-scene" id="kikiRoomScene" data-bed="rosa" data-rug="lila" data-lamp="corazon" data-plant="monstera" aria-label="Habitación acogedora de Kiki">
+                                    <div class="room-window" aria-label="Ventana con cielo estrellado"><span>☾</span><i></i></div>
+                                    <div class="room-wall-art" aria-hidden="true">✿</div>
+                                    <div class="room-lamp" aria-hidden="true"><i></i><span></span></div>
+                                    <div class="room-bed" aria-label="Cama de Kiki">
+                                        <span class="room-pillow"></span><span class="room-blanket"></span>
+                                    </div>
+                                    <div class="room-rug" aria-hidden="true"></div>
+                                    <div class="room-plant" aria-label="Planta decorativa"><i></i><i></i><i></i><span></span></div>
+                                    <button id="mascota-avatar" class="mascota-avatar" type="button" aria-label="Acariciar a Kiki">🐱</button>
+                                    <span class="room-state" id="kikiRoomState" aria-live="polite">Despierto</span>
+                                </div>
 
                                 <!-- Barras de Estado -->
                                 <div class="stats-container">
@@ -147,8 +158,33 @@
                             <button class="btn-comida-accion" onclick="alimentarMascota('boba', 15); playSound('pop');">🧋 Dale Boba<br><small>+15 hambre</small></button>
                             <button class="btn-comida-accion" onclick="alimentarMascota('pizza', 25); playSound('pop');">🍕 Dale Pizza<br><small>+25 hambre</small></button>
                         </div>
+                        <div class="room-actions">
+                            <button class="btn-muro" id="sleepKikiBtn" type="button" onclick="toggleDormirKiki()">🌙 A dormir</button>
+                            <button class="btn-muro reset-room-btn" id="openRoomReset" type="button">Restablecer habitación</button>
+                        </div>
+                        <div class="room-decor-controls">
+                            <h3>Un rinconcito para Kiki</h3>
+                            <label>Cama
+                                <select id="bedDecor"><option value="rosa">Rosa nube</option><option value="menta">Menta</option><option value="lila">Lila</option></select>
+                            </label>
+                            <label>Alfombra
+                                <select id="rugDecor"><option value="lila">Lila</option><option value="rosa">Rosa</option><option value="menta">Menta</option></select>
+                            </label>
+                            <label>Lámpara
+                                <select id="lampDecor"><option value="corazon">Corazón</option><option value="luna">Lunita</option><option value="estrella" disabled>Estrella (10 corazones)</option></select>
+                            </label>
+                            <label>Planta
+                                <select id="plantDecor"><option value="monstera">Monstera</option><option value="suculenta">Suculenta</option><option value="flor" disabled>Flor (5 corazones)</option></select>
+                            </label>
+                            <p id="roomUnlockMessage" class="room-unlock-message" aria-live="polite">Atrapa corazones en los minijuegos para desbloquear detalles especiales.</p>
+                        </div>
                     </div>
                 </div>
+                <dialog class="room-reset-dialog" id="roomResetDialog">
+                    <h3>¿Restablecer el rinconcito de Kiki?</h3>
+                    <p>Se reiniciarán su habitación y sus estadísticas. Los récords de los juegos no cambiarán.</p>
+                    <div><button class="btn-muro" id="cancelRoomReset" type="button">Conservar</button><button class="btn-muro" id="confirmRoomReset" type="button">Sí, restablecer</button></div>
+                </dialog>
             </div>
 
             <!-- PENDIENTES -->
@@ -241,14 +277,50 @@
                 </div>
             </div>
 
-            <!-- JUEGO -->
+            <!-- COLECCIÓN DE MINIJUEGOS -->
             <div id="juego" class="capa">
-                <h2>Atrapa la Magia 🎮</h2>
-                <p>Puntos: <strong id="puntajeJuego" style="color: var(--rosa-brillante); font-size: 1.3rem;">0</strong></p>
-                <div class="zona-juego" id="zonaJuego">
-                    <div id="spawnCorazon"></div>
+                <div class="games-catalog" id="gamesCatalog">
+                    <h2>Mis Minijuegos 🎮</h2>
+                    <p class="games-intro">Un ratito de juego en mi universo ✨</p>
+                    <div class="minigames-grid">
+                        <article class="minigame-card">
+                            <div class="game-preview heart-preview" aria-hidden="true"><span>💖</span><i>✦</i><b>★</b></div>
+                            <h3>Atrapa la Magia</h3>
+                            <p>Toca los corazones y junta tantos como puedas en 30 segundos.</p>
+                            <div class="game-card-record">Récord <strong id="catchBestCard">0</strong></div>
+                            <button class="btn-muro game-open-btn" type="button" data-open-game="catch">Jugar ✨</button>
+                        </article>
+                        <article class="minigame-card">
+                            <div class="game-preview portal-preview" aria-hidden="true"><span>🚀</span><i></i></div>
+                            <h3>Portal de Pigmentos</h3>
+                            <p>Combina colores y ayuda a la nave de Kiki a abrir portales.</p>
+                            <div class="game-card-record">Récord <strong id="portalBestCard">0</strong></div>
+                            <button class="btn-muro game-open-btn" type="button" data-open-game="portal">Entrar al laboratorio 🧪</button>
+                        </article>
+                    </div>
                 </div>
-                <button class="btn-muro" style="margin-top: 15px;" onclick="iniciarJuego()">¡Iniciar Juego!</button>
+                <div class="game-player" id="gamePlayer" hidden>
+                    <div class="game-player-heading">
+                        <button class="btn-muro" id="backToGames" type="button">← Colección</button>
+                        <h2 id="activeGameTitle">Juego</h2>
+                    </div>
+                    <section class="catch-game-stage" id="catchGameStage" hidden aria-label="Juego Atrapa la Magia">
+                        <p class="game-instructions">Toca o haz clic en cada figura antes de que aparezca otra. Tienes 30 segundos.</p>
+                        <div class="catch-scoreboard"><span>Puntos <strong id="puntajeJuego">0</strong></span><span>Tiempo <strong id="catchTime">30</strong>s</span><span>Récord <strong id="catchBest">0</strong></span></div>
+                        <div class="zona-juego" id="zonaJuego" aria-label="Zona para atrapar estrellas y corazones"><div id="spawnCorazon"></div></div>
+                        <div class="catch-controls">
+                            <button class="btn-muro" id="startCatchBtn" type="button">Iniciar</button>
+                            <button class="btn-muro" id="pauseCatchBtn" type="button" disabled>Pausar</button>
+                            <button class="btn-muro" id="resumeCatchBtn" type="button" disabled>Reanudar</button>
+                            <button class="btn-muro" id="restartCatchBtn" type="button">Reiniciar</button>
+                        </div>
+                        <p id="catchStatus" class="game-status" role="status" aria-live="polite">Listos cuando tú quieras 💖</p>
+                    </section>
+                    <section class="portal-game-stage" id="portalGameStage" hidden aria-label="Juego Portal de Pigmentos">
+                        <p class="game-instructions">Mezcla pigmentos para encontrar el color solicitado. Se guarda tu récord en este navegador.</p>
+                        <iframe id="portalGameFrame" title="Portal de Pigmentos" loading="lazy" src="about:blank"></iframe>
+                    </section>
+                </div>
             </div>
 
         </main>

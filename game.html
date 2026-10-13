@@ -64,6 +64,9 @@
       margin-bottom: 20px;
     }
 
+    body.embedded { padding: 8px; }
+    body.embedded .topbar { display: none; }
+
     .brand { display: flex; align-items: center; gap: 12px; }
     .brand-mark {
       display: grid;
@@ -434,6 +437,23 @@
   </div>
 
   <script>
+    if (new URLSearchParams(window.location.search).get('embed') === '1') {
+      document.body.classList.add('embedded');
+    }
+
+    function readPortalBest() {
+      try {
+        const value = Number(window.localStorage.getItem('portal_lab_best'));
+        return Number.isFinite(value) ? Math.max(0, value) : 0;
+      } catch {
+        return 0;
+      }
+    }
+
+    function savePortalBest(value) {
+      try { window.localStorage.setItem('portal_lab_best', String(value)); } catch {}
+    }
+
     const pigments = {
       magenta: { name: 'Magenta', hex: '#c43584' },
       amarillo: { name: 'Amarillo', hex: '#e8c94e' },
@@ -493,7 +513,7 @@
     let lives = maxLives;
     let streak = 0;
     let missionLocked = false;
-    let best = Number(localStorage.getItem('portal_lab_best')) || 0;
+    let best = readPortalBest();
     let currentTarget = levels[0].targets[0];
 
     const reagentTray = document.querySelector('.reagents');
@@ -639,7 +659,7 @@
         score += 100 + Math.min(streak - 1, 5) * 25;
         if (score > best) {
           best = score;
-          localStorage.setItem('portal_lab_best', String(best));
+          savePortalBest(best);
         }
         setStatus(`Resultado: ${mixedColor.name}. ¡Color sintetizado!`, 'good');
         viewport.classList.remove('result-flash');

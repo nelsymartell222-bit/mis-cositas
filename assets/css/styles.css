@@ -352,6 +352,27 @@ body {
 .capa { display: none; animation: popIn 0.3s ease forwards; }
 .capa.activa { display: block; }
 
+.galeria-dibujos {
+  max-width: 720px; margin: 20px auto 0; padding: 18px;
+  background: var(--card-bg); border: 3px dashed var(--rosa-pastel);
+  border-radius: 24px; box-shadow: var(--sombra-3d);
+}
+
+.dibujo-slide { margin: 0; text-align: center; }
+.dibujo-slide[hidden] { display: none; }
+
+.dibujo-slide img {
+  display: block; width: 100%; height: min(62vh, 620px);
+  object-fit: contain; border-radius: 16px;
+}
+
+.galeria-controles {
+  display: flex; align-items: center; justify-content: center;
+  gap: 22px; margin-top: 16px; font-weight: bold;
+}
+
+.galeria-controles .btn-muro { min-width: 48px; font-size: 1.2rem; }
+
 @keyframes popIn {
   from { opacity: 0; transform: scale(0.97); }
   to { opacity: 1; transform: scale(1); }

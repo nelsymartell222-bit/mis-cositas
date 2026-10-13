@@ -62,6 +62,7 @@
             <button class="menu-btn" onclick="irACapa('metas', this)">📝 Mis Pendientes</button>
             <button class="menu-btn" onclick="irACapa('calculadora', this)">🧮 Calculadora</button>
             <button class="menu-btn" onclick="irACapa('muro', this)">💌 Muro Público</button>
+            <button class="menu-btn" onclick="irACapa('dibujos', this)">🎨 Mis Dibujos</button>
             <a class="menu-btn" href="./game.html" style="display: inline-flex; align-items: center; justify-content: center; text-decoration: none; text-align: center;">🎮 Minijuego</a>
         </aside>
 
@@ -203,6 +204,40 @@
                     <textarea id="textoMensaje" class="input-muro" placeholder="Deja un mensaje lindo..." rows="2"></textarea>
                     <button class="btn-muro" onclick="guardarMensaje()">Enviar 💖</button>
                     <div class="lista-mensajes" id="cajaMensajes"></div>
+                </div>
+            </div>
+
+            <!-- GALERÍA DE DIBUJOS -->
+            <div id="dibujos" class="capa">
+                <h2>Mis Dibujos 🎨</h2>
+                <p>Dibujos para mi amorcito Dom 💖</p>
+                <div class="galeria-dibujos" aria-label="Galería de dibujos">
+                    <figure class="dibujo-slide">
+                        <img src="./Screenshot_20261013_113149_noteit.jpg" alt="Dibujo 1 para Dom">
+                    </figure>
+                    <figure class="dibujo-slide" hidden>
+                        <img src="./Screenshot_20261013_113141_noteit.jpg" alt="Dibujo 2 para Dom">
+                    </figure>
+                    <figure class="dibujo-slide" hidden>
+                        <img src="./Screenshot_20261013_113122_noteit.jpg" alt="Dibujo 3 para Dom">
+                    </figure>
+                    <figure class="dibujo-slide" hidden>
+                        <img src="./Screenshot_20261013_113111_noteit.jpg" alt="Dibujo 4 para Dom">
+                    </figure>
+                    <figure class="dibujo-slide" hidden>
+                        <img src="./Screenshot_20261013_113054_noteit.jpg" alt="Dibujo 5 para Dom">
+                    </figure>
+                    <figure class="dibujo-slide" hidden>
+                        <img src="./Screenshot_20261013_103505_noteit.jpg" alt="Dibujo 6 para Dom">
+                    </figure>
+                    <figure class="dibujo-slide" hidden>
+                        <img src="./noteit_1791896940025.jpg" alt="Dibujo 7 para Dom">
+                    </figure>
+                    <div class="galeria-controles">
+                        <button class="btn-muro" type="button" onclick="moverDibujo(-1)" aria-label="Ver dibujo anterior">←</button>
+                        <span id="contadorDibujos" aria-live="polite">1 / 7</span>
+                        <button class="btn-muro" type="button" onclick="moverDibujo(1)" aria-label="Ver dibujo siguiente">→</button>
+                    </div>
                 </div>
             </div>
 

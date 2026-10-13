@@ -225,6 +225,17 @@ function irACapa(idCapa, btn) {
   btn.classList.add('activo');
 }
 
+const dibujosGaleria = document.querySelectorAll('.dibujo-slide');
+let dibujoActual = 0;
+
+function moverDibujo(direccion) {
+  dibujosGaleria[dibujoActual].hidden = true;
+  dibujoActual = (dibujoActual + direccion + dibujosGaleria.length) % dibujosGaleria.length;
+  dibujosGaleria[dibujoActual].hidden = false;
+  document.getElementById('contadorDibujos').textContent = `${dibujoActual + 1} / ${dibujosGaleria.length}`;
+  playSound('pop');
+}
+
 let pantalla = document.getElementById('resultado');
 
 function agregar(v) {

@@ -1,44 +1,365 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cyber Dodge - Arcade Pro</title>
-  <link rel="stylesheet" href="./assets/css/game.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiverso Interdimensional - Game</title>
+    <style>
+        :root {
+            /* Paleta de Colores de Rick y Morty */
+            --rick-bg: #0b0e14;          /* Espacio profundo */
+            --portal-green: #a6e22e;     /* Verde verde portal radioactivo */
+            --portal-glow: #00ff66;      /* Brillo portal */
+            --rick-blue: #00d2ff;        /* Azul camisa Rick / tecnología */
+            --morty-yellow: #ffe600;     /* Amarillo camisa Morty */
+            --space-purple: #1f0836;     /* Nebulosa morada */
+            --hazard-red: #ff0055;       /* Rojo peligro */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--rick-bg);
+            background-image: radial-gradient(circle at 50% 50%, var(--space-purple) 0%, var(--rick-bg) 80%);
+            color: #ffffff;
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            height: 100vh;
+            user-select: none;
+        }
+
+        /* Encabezado Estilo Rick & Morty */
+        #game-header {
+            width: 100%;
+            padding: 12px 25px;
+            background: rgba(11, 14, 20, 0.85);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--portal-green);
+            box-shadow: 0 0 20px var(--portal-glow);
+            z-index: 10;
+            position: relative;
+        }
+
+        #scoreboard {
+            font-size: 1.6rem;
+            color: var(--rick-blue);
+            text-shadow: 0 0 10px var(--rick-blue);
+            font-weight: bold;
+        }
+
+        #lives-container {
+            font-size: 1.6rem;
+            display: flex;
+            gap: 10px;
+            color: var(--morty-yellow);
+            text-shadow: 0 0 10px var(--morty-yellow);
+        }
+
+        #game-area {
+            position: relative;
+            width: 100vw;
+            height: calc(100vh - 65px);
+            cursor: crosshair;
+        }
+
+        /* Nave Espacial con Avatar de la Pareja */
+        #couple-ship {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 140px;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s ease;
+        }
+
+        /* La imagen de ustedes dos dentro de la cabina */
+        #avatar-photo {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            /* !!! COLOCA AQUÍ EL NOMBRE DE TU IMAGEN !!! */
+            background-image: url('./1000072370.jpg'); 
+            background-size: cover;
+            background-position: center;
+            border: 3px solid var(--portal-green);
+            box-shadow: 0 0 15px var(--portal-glow);
+            z-index: 2;
+        }
+
+        /* La Nave Espacial */
+        .spaceship-body {
+            position: absolute;
+            bottom: 0;
+            width: 130px;
+            height: 45px;
+            background: linear-gradient(180deg, #607d8b, #263238);
+            border-radius: 50px 50px 20px 20px;
+            border: 2px solid var(--rick-blue);
+            box-shadow: 0 0 15px var(--rick-blue), inset 0 0 10px #000;
+            z-index: 1;
+        }
+
+        /* Luces Neón de la Nave */
+        .spaceship-body::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 20px;
+            right: 20px;
+            height: 6px;
+            background: var(--portal-green);
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--portal-glow);
+        }
+
+        /* Nodos/Portales que salen */
+        .portal-node {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--portal-green) 20%, #000 80%);
+            border: 3px solid var(--portal-glow);
+            box-shadow: 0 0 20px var(--portal-glow);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.4rem;
+            animation: portalSpin 0.4s ease-out;
+        }
+
+        /* Trampas / Parásitos / Virus */
+        .portal-node.hazard {
+            background: radial-gradient(circle, var(--hazard-red) 20%, #000 80%);
+            border: 3px solid var(--hazard-red);
+            box-shadow: 0 0 20px var(--hazard-red);
+        }
+
+        @keyframes portalSpin {
+            0% { transform: scale(0) rotate(180deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        /* Pantalla de Game Over Interdimensional */
+        #game-over-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 14, 20, 0.95);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            text-align: center;
+        }
+
+        #game-over-screen h2 {
+            font-size: 2.8rem;
+            color: var(--portal-green);
+            text-shadow: 0 0 25px var(--portal-glow);
+            margin-bottom: 15px;
+        }
+
+        #final-score {
+            font-size: 1.5rem;
+            color: var(--rick-blue);
+            margin-bottom: 30px;
+        }
+
+        .rick-btn {
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            font-family: inherit;
+            font-weight: bold;
+            background: transparent;
+            color: var(--portal-green);
+            border: 3px solid var(--portal-green);
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(166, 226, 46, 0.4);
+        }
+
+        .rick-btn:hover {
+            background: var(--portal-green);
+            color: var(--rick-bg);
+            box-shadow: 0 0 35px var(--portal-glow);
+        }
+    </style>
 </head>
 <body>
-  <nav class="navbar">
-    <a href="./index.html" class="nav-btn">⚡ Inicio</a>
-    <a href="./game.html" class="nav-btn active">🎮 Cyber Runner</a>
-    <button id="gameThemeBtn" class="nav-btn" onclick="toggleDarkMode()">🌙 Modo</button>
-  </nav>
 
-  <main class="game-wrapper">
-    <div class="game-header">
-      <h2>CYBER DODGE 2D</h2>
-      <div class="scoreboard">
-        <div>SCORE: <span id="current-score">0</span></div>
-        <div>HIGH SCORE: <span id="high-score">0</span></div>
-      </div>
+    <header id="game-header">
+        <div id="scoreboard">PUNTOS: <span id="points">0</span></div>
+        <div id="lives-container">🧪🧪🧪</div>
+    </header>
+
+    <div id="game-area">
+        <!-- Nave con Foto de la Pareja -->
+        <div id="couple-ship">
+            <div id="avatar-photo"></div>
+            <div class="spaceship-body"></div>
+        </div>
+
+        <!-- Pantalla de Game Over -->
+        <div id="game-over-screen">
+            <h2>🌀 VIAJE DIMENSIONAL FALLIDO 🌀</h2>
+            <p id="final-score">Puntaje: 0</p>
+            <button class="rick-btn" onclick="reiniciarJuego()">ABRIR OTRO PORTAL</button>
+        </div>
     </div>
 
-    <div class="canvas-container">
-      <canvas id="gameCanvas" width="600" height="400"></canvas>
+    <script>
+        let puntos = 0;
+        let vidas = 3;
+        let nivel = 1;
+        let spawnRate = 1400;
+        let disappearTime = 2200;
+        let gameActive = false;
 
-      <div id="game-over-screen" class="overlay hidden">
-        <h3 class="danger-text">SYSTEM COLLISION DETECTED</h3>
-        <p>Puntaje Final: <span id="final-score">0</span></p>
-        <button class="btn-pro" onclick="iniciarJuego()">REINTENTAR</button>
-      </div>
+        const gameArea = document.getElementById('game-area');
+        const pointsSpan = document.getElementById('points');
+        const livesContainer = document.getElementById('lives-container');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const finalScoreText = document.getElementById('final-score');
+        const ship = document.getElementById('couple-ship');
 
-      <div id="start-screen" class="overlay">
-        <h3>CONTROLES</h3>
-        <p>Usa las Flechas / WASD o arrastra el mouse/dedo para esquivar los bloques.</p>
-        <button class="btn-pro" onclick="iniciarJuego()">INICIAR MISION</button>
-      </div>
-    </div>
-  </main>
+        function iniciarJuego() {
+            puntos = 0;
+            vidas = 3;
+            nivel = 1;
+            spawnRate = 1400;
+            disappearTime = 2200;
+            gameActive = true;
+            actualizarUI();
+            gameOverScreen.style.display = 'none';
+            document.querySelectorAll('.portal-node').forEach(n => n.remove());
+            gameLoop();
+        }
 
-  <script src="./assets/js/game.js"></script>
+        function gameLoop() {
+            if (!gameActive) return;
+            crearNodo();
+            setTimeout(() => {
+                if (gameActive) {
+                    if (puntos > 40 * nivel) subirDificultad();
+                    gameLoop();
+                }
+            }, spawnRate);
+        }
+
+        function crearNodo() {
+            const nodo = document.createElement('div');
+            nodo.classList.add('portal-node');
+            
+            const esPeligro = Math.random() < 0.2 + (nivel * 0.02);
+            if (esPeligro) {
+                nodo.classList.add('hazard');
+                nodo.textContent = '👾';
+            } else {
+                nodo.textContent = '⚡';
+            }
+
+            const randomX = Math.random() * (gameArea.clientWidth - 60);
+            const randomY = Math.random() * (gameArea.clientHeight - 180) + 20;
+
+            nodo.style.left = `${randomX}px`;
+            nodo.style.top = `${randomY}px`;
+
+            nodo.addEventListener('mousedown', (e) => {
+                e.stopPropagation();
+                alTocarNodo(nodo, esPeligro);
+            });
+
+            gameArea.appendChild(nodo);
+
+            setTimeout(() => {
+                if (gameActive && nodo.parentNode) {
+                    if (!esPeligro) {
+                        sacudirNave();
+                        restarVida();
+                    }
+                    nodo.style.opacity = '0';
+                    setTimeout(() => { if (nodo.parentNode) nodo.remove(); }, 200);
+                }
+            }, disappearTime);
+        }
+
+        function alTocarNodo(nodo, esPeligro) {
+            if (!gameActive) return;
+
+            if (esPeligro) {
+                puntos = Math.max(0, puntos - 10);
+                sacudirNave();
+                restarVida();
+            } else {
+                puntos += 10;
+                actualizarUI();
+            }
+
+            nodo.style.transform = 'scale(1.3)';
+            setTimeout(() => nodo.remove(), 100);
+        }
+
+        gameArea.addEventListener('mousedown', () => {
+            if (!gameActive) return;
+            puntos = Math.max(0, puntos - 2);
+            actualizarUI();
+        });
+
+        function subirDificultad() {
+            nivel++;
+            spawnRate = Math.max(350, spawnRate - 120);
+            disappearTime = Math.max(500, disappearTime - 180);
+        }
+
+        function restarVida() {
+            vidas--;
+            actualizarUI();
+            if (vidas <= 0) gameOver();
+        }
+
+        function actualizarUI() {
+            pointsSpan.textContent = puntos;
+            let livesStr = '';
+            for (let i = 0; i < vidas; i++) livesStr += '🧪';
+            livesContainer.textContent = livesStr;
+        }
+
+        function sacudirNave() {
+            ship.style.transform = 'translateX(-50%) translateY(-15px)';
+            setTimeout(() => ship.style.transform = 'translateX(-50%)', 120);
+        }
+
+        function gameOver() {
+            gameActive = false;
+            gameOverScreen.style.display = 'flex';
+            finalScoreText.textContent = `Puntaje Final: ${puntos} en la Dimensión C-${nivel}`;
+        }
+
+        function reiniciarJuego() {
+            iniciarJuego();
+        }
+
+        iniciarJuego();
+    </script>
 </body>
 </html>

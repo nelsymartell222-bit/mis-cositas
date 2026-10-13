@@ -152,8 +152,9 @@
     .stat strong.score { color: var(--green); }
     .lives { display: flex; gap: 5px; color: var(--pink); font-size: 0.9rem; letter-spacing: 0.03em; }
 
-    .mission-foot { display: flex; flex-wrap: wrap; gap: 7px; margin-top: auto; padding-top: 20px; }
-    .tag { padding: 6px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 0.66rem; }
+    .level-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 8px 0 14px; }
+    .level-name { color: var(--green); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+    .level-difficulty { color: var(--muted); font-size: 0.67rem; }
 
     .lab-panel { min-width: 0; padding: 18px; }
     .lab-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 1px 2px 14px; }
@@ -271,6 +272,15 @@
     @keyframes flash { 50% { box-shadow: inset 0 0 45px rgba(165,255,69,0.25), 0 0 24px rgba(80,216,255,0.3); } }
     .shake { animation: shake 300ms ease; }
     @keyframes shake { 25% { translate: -5px 0; } 75% { translate: 5px 0; } }
+    .viewport.jumping .ship { animation: shipJump 950ms cubic-bezier(0.2, 0.7, 0.25, 1) forwards; }
+    .viewport.crashing .ship { animation: shipCrash 850ms cubic-bezier(0.45, 0, 0.8, 0.4) forwards; }
+    .crash-burst { position: absolute; top: 50%; left: 50%; z-index: 3; width: 16px; aspect-ratio: 1; border: 2px solid #fff3a8; border-radius: 50%; opacity: 0; background: radial-gradient(circle, #fff 0 8%, #ffe66b 10% 23%, #ff7b45 28% 44%, rgba(255,69,101,0.1) 68%, transparent 70%); box-shadow: 0 0 18px #ff9b46; transform: translate(-50%, -50%); pointer-events: none; }
+    .viewport.crashing .crash-burst { animation: crashBurst 850ms ease-out forwards; }
+    .viewport.jumping .portal { animation: portalJump 950ms ease-in forwards; }
+    @keyframes shipJump { 0% { transform: translate(-50%, -50%) scale(1); opacity: 1; } 58% { transform: translate(-50%, -63%) scale(0.8); opacity: 1; } 100% { transform: translate(-50%, -135%) scale(0.12); opacity: 0; } }
+    @keyframes shipCrash { 0% { transform: translate(-50%, -50%) rotate(0) scale(1); opacity: 1; } 38% { transform: translate(-46%, -42%) rotate(18deg) scale(1.05); opacity: 1; } 100% { transform: translate(10%, 35%) rotate(125deg) scale(0.25); opacity: 0; } }
+    @keyframes crashBurst { 0% { width: 12px; opacity: 0; } 24% { opacity: 1; } 100% { width: 220px; opacity: 0; } }
+    @keyframes portalJump { 0%, 35% { box-shadow: 0 0 16px rgba(80,246,181,0.24), inset 0 0 20px rgba(80,216,255,0.12); } 70%, 100% { box-shadow: 0 0 55px rgba(165,255,69,0.8), inset 0 0 55px rgba(80,216,255,0.7); transform: translate(-50%, -50%) scale(1.2); } }
 
     .footer-line { display: flex; justify-content: space-between; gap: 12px; margin-top: 13px; color: rgba(145,183,170,0.68); font-size: 0.66rem; }
     .footer-line kbd { padding: 2px 5px; border: 1px solid var(--line); border-radius: 5px; color: var(--muted); font: inherit; }
@@ -289,7 +299,6 @@
       .mission-panel { padding: 17px; }
       .mission-copy { margin-bottom: 15px; }
       .progress-area { margin: 15px 0 13px; }
-      .mission-foot { padding-top: 14px; }
       .lab-panel { padding: 13px; }
       .viewport { min-height: clamp(210px, 46vw, 285px); }
     }
@@ -350,9 +359,11 @@
           <div class="target-orb" id="targetOrb" aria-label="Color rojo solicitado"></div>
         </div>
 
+        <div class="level-row"><span class="level-name" id="levelName">Nivel 1 · Básico</span><span class="level-difficulty" id="levelDifficulty">Pigmentos primarios</span></div>
+
         <div class="progress-area">
-          <div class="progress-label"><span>Carga del portal</span><strong id="progressText">0 / 6</strong></div>
-          <div class="progress-track" role="progressbar" aria-label="Carga del portal" aria-valuemin="0" aria-valuemax="6" aria-valuenow="0">
+          <div class="progress-label"><span>Carga del portal</span><strong id="progressText">1 / 3</strong></div>
+          <div class="progress-track" role="progressbar" aria-label="Progreso del nivel" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0">
             <div class="progress-fill" id="progressFill"></div>
           </div>
         </div>
@@ -364,11 +375,6 @@
           <div class="stat"><span>Récord</span><strong id="bestText">000</strong></div>
         </div>
 
-        <div class="mission-foot" aria-label="Mezclas disponibles">
-          <span class="tag">M + A = ROJO</span>
-          <span class="tag">A + C = VERDE</span>
-          <span class="tag">C + M = AZUL</span>
-        </div>
       </aside>
 
       <section class="lab-panel" aria-label="Estación de síntesis">
@@ -380,6 +386,7 @@
         <div class="viewport" id="viewport">
           <span class="dimension-label">Sector 07 · coordenadas inestables</span>
           <div class="portal" aria-hidden="true"></div>
+          <div class="crash-burst" aria-hidden="true"></div>
           <div class="ship" role="img" aria-label="Navecita lista para atravesar el portal">
             <span class="ship-wing left"></span><span class="ship-wing right"></span>
             <span class="ship-body"></span><span class="cockpit"></span>
@@ -390,15 +397,6 @@
 
         <div class="mix-station">
           <div class="reagents" role="group" aria-label="Reactivos de color">
-            <button class="reagent" style="--reagent:#ff53cf" data-color="magenta" aria-pressed="false" aria-label="Añadir pigmento magenta">
-              <span class="reagent-dot" aria-hidden="true"></span><span class="reagent-name">Magenta</span>
-            </button>
-            <button class="reagent" style="--reagent:#ffe64f" data-color="amarillo" aria-pressed="false" aria-label="Añadir pigmento amarillo">
-              <span class="reagent-dot" aria-hidden="true"></span><span class="reagent-name">Amarillo</span>
-            </button>
-            <button class="reagent" style="--reagent:#50d8ff" data-color="cian" aria-pressed="false" aria-label="Añadir pigmento cian">
-              <span class="reagent-dot" aria-hidden="true"></span><span class="reagent-name">Cian</span>
-            </button>
           </div>
 
           <div class="mix-bowl" aria-label="Mezcla seleccionada">
@@ -421,7 +419,7 @@
             <button class="action-btn" id="mixBtn" type="button" disabled>Catalizar mezcla</button>
           </div>
         </div>
-        <div class="footer-line"><span>Reactivos: M · A · C</span><span>También puedes usar <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> y <kbd>Enter</kbd></span></div>
+        <div class="footer-line"><span>Pigmentos de pintura · resultados aproximados</span><span>Teclas <kbd>1</kbd>–<kbd>9</kbd> y <kbd>Enter</kbd></span></div>
       </section>
     </section>
   </main>
@@ -436,24 +434,69 @@
   </div>
 
   <script>
-    const targets = [
-      { name: 'Rojo', pair: ['magenta', 'amarillo'], hex: '#ff3d5c' },
-      { name: 'Verde', pair: ['amarillo', 'cian'], hex: '#54ee82' },
-      { name: 'Azul', pair: ['cian', 'magenta'], hex: '#4c83ff' }
+    const pigments = {
+      magenta: { name: 'Magenta', hex: '#c43584' },
+      amarillo: { name: 'Amarillo', hex: '#e8c94e' },
+      cian: { name: 'Cian', hex: '#30999c' },
+      rojo: { name: 'Rojo', hex: '#c93f3d' },
+      verde: { name: 'Verde', hex: '#527a47' },
+      azul: { name: 'Azul', hex: '#3d63a0' },
+      naranja: { name: 'Naranja', hex: '#d77c36' },
+      violeta: { name: 'Violeta', hex: '#76549a' },
+      turquesa: { name: 'Turquesa', hex: '#398f88' },
+      lima: { name: 'Verde lima', hex: '#9ba83c' },
+      marron: { name: 'Marrón', hex: '#72503b' },
+      oliva: { name: 'Verde oliva', hex: '#77713c' },
+      neutro: { name: 'Neutro oscuro', hex: '#383a37' }
+    };
+    const mixtures = [
+      { name: 'Rojo', ingredients: ['magenta', 'amarillo'], hex: '#c93f3d' },
+      { name: 'Verde', ingredients: ['amarillo', 'cian'], hex: '#527a47' },
+      { name: 'Azul', ingredients: ['cian', 'magenta'], hex: '#3d63a0' },
+      { name: 'Naranja', ingredients: ['rojo', 'amarillo'], hex: '#d77c36' },
+      { name: 'Violeta', ingredients: ['rojo', 'azul'], hex: '#76549a' },
+      { name: 'Turquesa', ingredients: ['azul', 'verde'], hex: '#398f88' },
+      { name: 'Verde lima', ingredients: ['amarillo', 'verde'], hex: '#9ba83c' },
+      { name: 'Marrón', ingredients: ['naranja', 'azul'], hex: '#72503b' },
+      { name: 'Verde oliva', ingredients: ['verde', 'rojo', 'amarillo'], hex: '#77713c' },
+      { name: 'Neutro oscuro', ingredients: ['magenta', 'amarillo', 'cian'], hex: '#383a37' }
     ];
-    const pigmentHex = { magenta: '#ff53cf', amarillo: '#ffe64f', cian: '#50d8ff' };
-    const pigmentNames = { magenta: 'Magenta', amarillo: 'Amarillo', cian: 'Cian' };
-    const totalTargets = 6;
+    const mixtureByName = new Map(mixtures.map((mixture) => [mixture.name, mixture]));
+    const levels = [
+      {
+        title: 'Nivel 1 · Básico',
+        difficulty: 'Pigmentos primarios',
+        palette: ['magenta', 'amarillo', 'cian'],
+        targetNames: ['Rojo', 'Verde', 'Azul']
+      },
+      {
+        title: 'Nivel 2 · Intermedio',
+        difficulty: 'Colores secundarios',
+        palette: ['magenta', 'amarillo', 'cian', 'rojo', 'verde', 'azul'],
+        targetNames: ['Naranja', 'Violeta', 'Turquesa', 'Verde lima']
+      },
+      {
+        title: 'Nivel 3 · Avanzado',
+        difficulty: 'Mezclas complejas',
+        palette: ['magenta', 'amarillo', 'cian', 'rojo', 'verde', 'azul', 'naranja', 'violeta', 'turquesa', 'lima'],
+        targetNames: ['Marrón', 'Verde oliva', 'Neutro oscuro']
+      }
+    ];
+    levels.forEach((level) => {
+      level.targets = level.targetNames.map((name) => mixtureByName.get(name));
+    });
     const maxLives = 3;
     const selected = [];
+    let levelIndex = 0;
     let round = 0;
     let score = 0;
     let lives = maxLives;
     let streak = 0;
+    let missionLocked = false;
     let best = Number(localStorage.getItem('portal_lab_best')) || 0;
-    let currentTarget = targets[0];
+    let currentTarget = levels[0].targets[0];
 
-    const reagentButtons = [...document.querySelectorAll('.reagent')];
+    const reagentTray = document.querySelector('.reagents');
     const vials = document.getElementById('vials');
     const mixButton = document.getElementById('mixBtn');
     const clearButton = document.getElementById('clearBtn');
@@ -467,14 +510,41 @@
       statusText.dataset.state = state;
     }
 
+    function ingredientKey(ingredients) {
+      return [...ingredients].sort().join('+');
+    }
+
+    function currentLevel() {
+      return levels[levelIndex];
+    }
+
+    function renderReagents() {
+      reagentTray.replaceChildren();
+      currentLevel().palette.forEach((color, index) => {
+        const button = document.createElement('button');
+        button.className = 'reagent';
+        button.type = 'button';
+        button.dataset.color = color;
+        button.style.setProperty('--reagent', pigments[color].hex);
+        button.setAttribute('aria-pressed', 'false');
+        button.setAttribute('aria-label', `Añadir pigmento ${pigments[color].name.toLowerCase()}`);
+        button.innerHTML = '<span class="reagent-dot" aria-hidden="true"></span><span class="reagent-name"></span>';
+        button.querySelector('.reagent-name').textContent = pigments[color].name;
+        button.addEventListener('click', () => choosePigment(color));
+        button.dataset.shortcut = String(index + 1);
+        reagentTray.append(button);
+      });
+    }
+
     function renderSelection() {
       vials.replaceChildren();
-      for (let index = 0; index < 2; index += 1) {
+      const ingredientCount = currentTarget.ingredients.length;
+      for (let index = 0; index < ingredientCount; index += 1) {
         const vial = document.createElement('span');
         if (selected[index]) {
           vial.className = 'vial';
-          vial.style.setProperty('--vial-color', pigmentHex[selected[index]]);
-          vial.setAttribute('aria-label', pigmentNames[selected[index]]);
+          vial.style.setProperty('--vial-color', pigments[selected[index]].hex);
+          vial.setAttribute('aria-label', pigments[selected[index]].name);
         } else {
           vial.className = 'vial empty';
           vial.setAttribute('aria-hidden', 'true');
@@ -487,40 +557,46 @@
           vials.append(plus);
         }
       }
-      reagentButtons.forEach((button) => {
+      reagentTray.querySelectorAll('.reagent').forEach((button) => {
         button.setAttribute('aria-pressed', String(selected.includes(button.dataset.color)));
-        button.disabled = selected.length === 2;
+        button.disabled = selected.length >= ingredientCount;
       });
-      mixButton.disabled = selected.length !== 2;
+      mixButton.disabled = selected.length !== ingredientCount;
     }
 
     function nextTarget() {
-      const choices = targets.filter((target) => target.name !== currentTarget.name);
-      currentTarget = choices[Math.floor(Math.random() * choices.length)];
+      currentTarget = currentLevel().targets[round];
       document.getElementById('targetName').textContent = currentTarget.name;
       targetOrb.style.setProperty('--target-color', currentTarget.hex);
       targetOrb.setAttribute('aria-label', `Color ${currentTarget.name.toLowerCase()} solicitado`);
     }
 
     function updateHud() {
+      const level = currentLevel();
+      const levelTargetCount = level.targets.length;
+      document.getElementById('levelName').textContent = level.title;
+      document.getElementById('levelDifficulty').textContent = level.difficulty;
       document.getElementById('scoreText').textContent = String(score).padStart(3, '0');
       document.getElementById('bestText').textContent = String(best).padStart(3, '0');
       document.getElementById('streakText').textContent = `×${streak}`;
       document.getElementById('livesText').textContent = `${'● '.repeat(lives)}${'○ '.repeat(maxLives - lives)}`.trim();
       document.getElementById('livesText').setAttribute('aria-label', `${lives} de ${maxLives} intentos restantes`);
-      document.getElementById('progressText').textContent = `${round} / ${totalTargets}`;
-      document.querySelector('[role="progressbar"]').setAttribute('aria-valuenow', String(round));
-      document.getElementById('progressFill').style.width = `${round / totalTargets * 100}%`;
+      document.getElementById('progressText').textContent = `${Math.min(round + 1, levelTargetCount)} / ${levelTargetCount}`;
+      const progress = document.querySelector('[role="progressbar"]');
+      progress.setAttribute('aria-valuemax', String(levelTargetCount));
+      progress.setAttribute('aria-valuenow', String(round));
+      document.getElementById('progressFill').style.width = `${round / levelTargetCount * 100}%`;
     }
 
     function choosePigment(color) {
-      if (selected.length >= 2) return;
+      if (missionLocked || selected.length >= currentTarget.ingredients.length || selected.includes(color)) return;
       selected.push(color);
       renderSelection();
-      setStatus(selected.length === 2 ? 'Mezcla lista para catalizar.' : 'Añade un segundo pigmento.');
+      setStatus(selected.length === currentTarget.ingredients.length ? 'Mezcla lista para catalizar.' : 'Añade otro pigmento.');
     }
 
     function clearMixture() {
+      if (missionLocked) return;
       selected.length = 0;
       renderSelection();
       document.getElementById('reactionName').textContent = 'En espera';
@@ -533,21 +609,31 @@
       document.getElementById('endEyebrow').textContent = won ? 'Salto completado' : 'Señal perdida';
       document.getElementById('endTitle').textContent = won ? '¡Dimensión abierta!' : '¡La nave necesita recarga!';
       document.getElementById('endCopy').textContent = won
-        ? `Sintetizaste los seis colores y obtuviste ${score} puntos.`
+        ? `Completaste los tres niveles y obtuviste ${score} puntos.`
         : `La misión terminó con ${score} puntos. Prueba otra combinación.`;
       document.getElementById('restartBtn').focus();
     }
 
+    function animateFinish(won) {
+      missionLocked = true;
+      reagentTray.querySelectorAll('.reagent').forEach((button) => { button.disabled = true; });
+      mixButton.disabled = true;
+      clearButton.disabled = true;
+      viewport.classList.add(won ? 'jumping' : 'crashing');
+      setStatus(won ? '¡Impulso al portal!' : '¡Alerta! La nave perdió estabilidad.', won ? 'good' : 'bad');
+      window.setTimeout(() => finishMission(won), 950);
+    }
+
     function catalyze() {
-      if (selected.length !== 2) return;
-      const pair = [...selected].sort().join('+');
-      const requestedPair = [...currentTarget.pair].sort().join('+');
-      const mixedColor = targets.find((target) => [...target.pair].sort().join('+') === pair);
+      if (missionLocked || selected.length !== currentTarget.ingredients.length) return;
+      const mixtureKey = ingredientKey(selected);
+      const requestedKey = ingredientKey(currentTarget.ingredients);
+      const mixedColor = mixtures.find((mixture) => ingredientKey(mixture.ingredients) === mixtureKey);
       const mixOrb = document.getElementById('mixOrb');
-      document.getElementById('reactionName').textContent = mixedColor ? mixedColor.name : 'Inestable';
+      document.getElementById('reactionName').textContent = mixedColor ? mixedColor.name : 'Mezcla turbia';
       mixOrb.style.setProperty('--target-color', mixedColor ? mixedColor.hex : '#75818a');
 
-      if (pair === requestedPair) {
+      if (mixtureKey === requestedKey) {
         round += 1;
         streak += 1;
         score += 100 + Math.min(streak - 1, 5) * 25;
@@ -555,56 +641,72 @@
           best = score;
           localStorage.setItem('portal_lab_best', String(best));
         }
-        setStatus(`¡${currentTarget.name} sintetizado! La nave absorbió la muestra.`, 'good');
+        setStatus(`Resultado: ${mixedColor.name}. ¡Color sintetizado!`, 'good');
         viewport.classList.remove('result-flash');
         void viewport.offsetWidth;
         viewport.classList.add('result-flash');
-        updateHud();
         selected.length = 0;
-        renderSelection();
-        if (round >= totalTargets) {
-          finishMission(true);
+        if (round >= currentLevel().targets.length) {
+          if (levelIndex === levels.length - 1) {
+            updateHud();
+            animateFinish(true);
+            return;
+          }
+          levelIndex += 1;
+          round = 0;
+          renderReagents();
+          nextTarget();
+          setStatus(`${currentLevel().title}: nueva paleta desbloqueada.`, 'good');
         } else {
           nextTarget();
         }
+        updateHud();
+        renderSelection();
       } else {
         lives -= 1;
         streak = 0;
-        setStatus(`Reacción ${mixedColor ? mixedColor.name.toLowerCase() : 'inestable'}: no coincide.`, 'bad');
+        setStatus(`Resultado: ${mixedColor ? mixedColor.name.toLowerCase() : 'tono neutro turbio'}. No coincide con el objetivo.`, 'bad');
         viewport.classList.remove('shake');
         void viewport.offsetWidth;
         viewport.classList.add('shake');
         updateHud();
         selected.length = 0;
         renderSelection();
-        if (lives <= 0) finishMission(false);
+        if (lives <= 0) animateFinish(false);
       }
     }
 
-    reagentButtons.forEach((button) => button.addEventListener('click', () => choosePigment(button.dataset.color)));
     mixButton.addEventListener('click', catalyze);
     clearButton.addEventListener('click', clearMixture);
     document.getElementById('restartBtn').addEventListener('click', () => {
+      viewport.classList.remove('jumping', 'crashing', 'shake', 'result-flash');
+      missionLocked = false;
+      levelIndex = 0;
       round = 0;
       score = 0;
       lives = maxLives;
       streak = 0;
-      currentTarget = targets[0];
+      clearButton.disabled = false;
+      currentTarget = currentLevel().targets[0];
       document.getElementById('targetName').textContent = currentTarget.name;
       targetOrb.style.setProperty('--target-color', currentTarget.hex);
       endOverlay.hidden = true;
+      renderReagents();
       clearMixture();
       updateHud();
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === '1') choosePigment('magenta');
-      if (event.key === '2') choosePigment('amarillo');
-      if (event.key === '3') choosePigment('cian');
+      if (missionLocked) return;
+      const shortcutIndex = Number(event.key) - 1;
+      if (shortcutIndex >= 0 && shortcutIndex < currentLevel().palette.length) {
+        choosePigment(currentLevel().palette[shortcutIndex]);
+      }
       if (event.key === 'Enter' && !mixButton.disabled) catalyze();
       if (event.key === 'Escape') clearMixture();
     });
 
+    renderReagents();
     targetOrb.style.setProperty('--target-color', currentTarget.hex);
     updateHud();
     renderSelection();

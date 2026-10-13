@@ -1268,6 +1268,7 @@ body.dark-mode .game-card-record { color: var(--texto); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .mascota-avatar, .pet-avatar, .heart-preview span, .portal-preview i, .mascota-container::before { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+  body, .estrella-flotante, .chispa-cursor, .mascota-avatar, .pet-avatar, .heart-preview span, .portal-preview i, .mascota-container::before, .bar-fill::after, .corazon-activo { animation: none !important; transition: none !important; }
   .minigame-card:hover { transform: none; }
 }

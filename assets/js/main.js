@@ -256,7 +256,7 @@ for (let i = 0; i < 35; i++) {
 }
 
 function irACapa(idCapa, btn) {
-  if (idCapa !== 'juego' && catchState === 'running') pausarJuego(true);
+  if (catchState === 'running') pausarJuego(true);
   playSound('pop');
   document.querySelectorAll('.capa').forEach(c => c.classList.remove('activa'));
   document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('activo'));

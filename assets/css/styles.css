@@ -373,6 +373,116 @@ body {
 
 .galeria-controles .btn-muro { min-width: 48px; font-size: 1.2rem; }
 
+.creator-date {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.65rem;
+  opacity: 0.72;
+}
+
+.galeria-heading,
+.portal-galeria-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.galeria-heading h2,
+.portal-galeria-heading h3 { margin-bottom: 0; }
+
+.dibujo-secreto-trigger {
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--morado-pastel);
+  cursor: pointer;
+  opacity: 0.48;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.dibujo-secreto-trigger:hover,
+.dibujo-secreto-trigger:focus-visible { opacity: 1; transform: rotate(24deg) scale(1.12); }
+
+.portal-secreto[hidden],
+.portal-acceso[hidden],
+.portal-galeria[hidden],
+.dibujo-privado-slide[hidden] { display: none; }
+
+.portal-secreto {
+  position: relative;
+  overflow: hidden;
+  max-width: 720px;
+  margin: 18px auto 0;
+  padding: 22px;
+  border: 1px solid rgba(110, 224, 226, 0.65);
+  border-radius: 20px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(110, 224, 226, 0.2), transparent 60%), var(--card-bg);
+  box-shadow: 0 0 24px rgba(110, 224, 226, 0.12), inset 0 0 22px rgba(255, 184, 209, 0.08);
+}
+
+.portal-secreto::before,
+.portal-secreto::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  content: '';
+  background: linear-gradient(transparent, #6ee0e2, #ffb8d1, transparent);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.portal-secreto::before { left: 8px; }
+.portal-secreto::after { right: 8px; }
+
+.portal-acceso { text-align: center; }
+.portal-acceso h3,
+.portal-galeria-heading h3 { margin: 0 0 8px; color: var(--morado-pastel); }
+.portal-acceso p { margin: 8px 0 14px; }
+
+.portal-form {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.portal-password { flex: 1 1 190px; min-width: 0; }
+.portal-mensaje { min-height: 1.4em; margin-bottom: 0 !important; }
+.portal-galeria-heading { margin-bottom: 14px; }
+
+.portal-marco {
+  padding: 12px;
+  border: 1px solid rgba(255, 184, 209, 0.68);
+  border-radius: 16px;
+  background: rgba(20, 20, 36, 0.14);
+}
+
+.dibujo-privado-slide { margin: 0; text-align: center; }
+.dibujo-privado-slide img {
+  display: block;
+  width: 100%;
+  height: min(58vh, 560px);
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.portal-galeria.portal-abierto { animation: portalCrossing 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+@keyframes portalCrossing {
+  0% { opacity: 0; transform: perspective(900px) rotateY(18deg) scale(0.88); filter: hue-rotate(90deg) blur(8px); }
+  55% { opacity: 1; transform: perspective(900px) rotateY(-5deg) scale(1.02); filter: hue-rotate(-25deg) blur(0); }
+  100% { transform: perspective(900px) rotateY(0) scale(1); filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-galeria.portal-abierto { animation-duration: 0.01ms; }
+}
+
 @keyframes popIn {
   from { opacity: 0; transform: scale(0.97); }
   to { opacity: 1; transform: scale(1); }

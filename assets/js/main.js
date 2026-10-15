@@ -264,7 +264,7 @@ function irACapa(idCapa, btn) {
   btn.classList.add('activo');
 }
 
-const dibujosGaleria = document.querySelectorAll('.dibujo-slide');
+const dibujosGaleria = document.querySelectorAll('#dibujos > .galeria-dibujos .dibujo-slide');
 let dibujoActual = 0;
 
 function moverDibujo(direccion) {
@@ -274,6 +274,52 @@ function moverDibujo(direccion) {
   document.getElementById('contadorDibujos').textContent = `${dibujoActual + 1} / ${dibujosGaleria.length}`;
   playSound('pop');
 }
+
+const portalSecreto = document.getElementById('portalSecreto');
+const portalAcceso = document.getElementById('portalAcceso');
+const galeriaSecreta = document.getElementById('galeriaSecreta');
+const claveSecreta = document.getElementById('claveSecreta');
+const dibujosPrivados = document.querySelectorAll('.dibujo-privado-slide');
+let dibujoPrivadoActual = 0;
+
+function abrirAccesoSecreto() {
+  portalSecreto.hidden = false;
+  portalAcceso.hidden = false;
+  galeriaSecreta.hidden = true;
+  document.getElementById('mensajePortal').textContent = '';
+  claveSecreta.value = '';
+  claveSecreta.focus();
+}
+
+function cerrarPortalSecreto() {
+  galeriaSecreta.classList.remove('portal-abierto');
+  portalSecreto.hidden = true;
+  claveSecreta.value = '';
+}
+
+function moverDibujoPrivado(direccion) {
+  dibujosPrivados[dibujoPrivadoActual].hidden = true;
+  dibujoPrivadoActual = (dibujoPrivadoActual + direccion + dibujosPrivados.length) % dibujosPrivados.length;
+  dibujosPrivados[dibujoPrivadoActual].hidden = false;
+  document.getElementById('contadorDibujosPrivados').textContent = `${dibujoPrivadoActual + 1} / ${dibujosPrivados.length}`;
+  playSound('pop');
+}
+
+document.getElementById('formAccesoSecreto').addEventListener('submit', (event) => {
+  event.preventDefault();
+  if (claveSecreta.value === 'c137') {
+    portalAcceso.hidden = true;
+    galeriaSecreta.hidden = false;
+    galeriaSecreta.classList.remove('portal-abierto');
+    void galeriaSecreta.offsetWidth;
+    galeriaSecreta.classList.add('portal-abierto');
+    playSound('chime');
+    return;
+  }
+  document.getElementById('mensajePortal').textContent = 'El portal te devolvió con una burbuja de jabón. ¡Intenta de nuevo! 🫧';
+  claveSecreta.value = '';
+  claveSecreta.focus();
+});
 
 let pantalla = document.getElementById('resultado');
 
